@@ -27,7 +27,9 @@ from fastapi.middleware.cors import CORSMiddleware
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from pydantic import BaseModel
 from src.pipeline.video_pipeline import ClassroomAttentionPipeline
+from src.evaluation.before_after_analysis import compare_attention_intervals
 
 app = FastAPI(
     title="Smart Classroom Attention Analytics",
@@ -102,12 +104,22 @@ async def get_sample_videos():
         },
         {
             "id": "clip_4",
-            "name": "Clip 4 (Ground-Truth Annotated Benchmark)",
+            "name": "Clip 4 (Annotated Benchmark Clip)",
             "filename": "clip 4.mp4",
             "rel_path": "clip 4.mp4",
-            "description": "21 annotated students across 300 frames with ground-truth High/Moderate/Low labels.",
+            "description": "21 annotated students across 300 frames with individual High/Moderate/Low labels.",
             "students_expected": "21 visible students (100% Discovered & Tracked)",
             "camera_angle": "Full Classroom Overview",
+            "duration_sec": 10.0
+        },
+        {
+            "id": "clip_11",
+            "name": "Clip 11 (Independent Evaluation Benchmark)",
+            "filename": "clip_011.mp4",
+            "rel_path": "clip_011.mp4",
+            "description": "Independent evaluation benchmark (unseen during training) for out-of-distribution evaluation.",
+            "students_expected": "18–20 visible students",
+            "camera_angle": "Elevated Front-Quarter Classroom Overview",
             "duration_sec": 10.0
         }
     ]
@@ -182,6 +194,15 @@ async def stream_video(category: str, filename: str, request: Request):
         raise HTTPException(status_code=400, detail="Invalid video category")
 
 
+class IntervalComparisonRequest(BaseModel):
+    job_id: str
+    split_timestamp_sec: Optional[float] = None
+    before_start_sec: Optional[float] = None
+    before_end_sec: Optional[float] = None
+    after_start_sec: Optional[float] = None
+    after_end_sec: Optional[float] = None
+
+
 @app.post("/api/analyze")
 async def analyze_video(
     sample_id: Optional[str] = Form(None),
@@ -197,9 +218,21 @@ async def analyze_video(
     
     # 1. Resolve Input File
     if video_file and video_file.filename:
-        safe_name = f"{job_id}_{video_file.filename}"
-        input_path = UPLOADS_DIR / safe_name
+        filename_lower = video_file.filename.lower()
+        valid_exts = (".mp4", ".avi", ".mov", ".mkv", ".webm")
+        if not any(filename_lower.endswith(ext) for ext in valid_exts):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid video file format '{video_file.filename}'. Allowed formats: {', '.join(valid_exts)}"
+            )
         contents = await video_file.read()
+        if len(contents) == 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Uploaded video file is empty (0 bytes). Please provide a valid classroom video recording."
+            )
+        safe_name = f"{job_id}_{Path(video_file.filename).name}"
+        input_path = UPLOADS_DIR / safe_name
         input_path.write_bytes(contents)
         input_video_type = "upload"
         input_video_url = f"/api/video/upload/{safe_name}"
@@ -209,17 +242,20 @@ async def analyze_video(
             "low_view3": PILOT_DIR / "low_engagement" / "low" / "view3.mp4",
             "high_view11": PILOT_DIR / "high_engagement" / "high" / "view11.mp4",
             "clip_4": PROJECT_ROOT / "data" / "clip 4.mp4",
+            "clip_11": PROJECT_ROOT / "data" / "clip_011.mp4",
         }
         if sample_id not in sample_map:
             raise HTTPException(status_code=400, detail=f"Unknown sample ID: {sample_id}")
         input_path = sample_map[sample_id]
+        if not input_path.exists():
+            raise HTTPException(status_code=404, detail=f"Sample video file not found at {input_path}")
         input_video_type = "sample"
         input_video_url = f"/api/video/sample/{input_path.name}"
     else:
         raise HTTPException(status_code=400, detail="Must provide either video_file or sample_id")
 
     # 2. Output Video Path
-    output_filename = f"output_{job_id}.mp4"
+    output_filename = f"output_{job_id}_{input_path.stem}.mp4"
     output_path = OUTPUTS_DIR / output_filename
     output_video_url = f"/api/video/output/{output_filename}"
 
@@ -259,6 +295,50 @@ async def analyze_video(
 
     active_jobs[job_id] = results
     return JSONResponse(content=results)
+
+
+@app.post("/api/compare_intervals")
+async def compare_intervals(req: IntervalComparisonRequest):
+    """
+    Run statistical before-and-after comparison on a completed video analysis.
+    Computes Welch's t-test, Cohen's d effect size, high/moderate/low proportions,
+    and observable behavioral shifts without LLM dependencies.
+    """
+    job_data = active_jobs.get(req.job_id)
+    if not job_data:
+        file_path = OUTPUTS_DIR / f"analysis_{req.job_id}.json"
+        if file_path.exists():
+            with open(file_path, "r", encoding="utf-8") as f:
+                job_data = json.load(f)
+        else:
+            raise HTTPException(status_code=404, detail=f"Analysis job '{req.job_id}' not found.")
+
+    student_summaries = job_data.get("student_summaries", [])
+    frame_stats = job_data.get("frame_stats", [])
+
+    if not student_summaries:
+        raise HTTPException(status_code=400, detail="Job has no student timeline data to compare.")
+
+    before_range = None
+    after_range = None
+    if req.before_start_sec is not None and req.before_end_sec is not None:
+        before_range = (req.before_start_sec, req.before_end_sec)
+    if req.after_start_sec is not None and req.after_end_sec is not None:
+        after_range = (req.after_start_sec, req.after_end_sec)
+
+    try:
+        result = compare_attention_intervals(
+            student_summaries=student_summaries,
+            frame_stats=frame_stats,
+            split_timestamp_sec=req.split_timestamp_sec,
+            before_range=before_range,
+            after_range=after_range
+        )
+        return JSONResponse(content=result.to_dict())
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Interval comparison calculation failed: {str(e)}")
 
 
 @app.get("/api/analysis/{job_id}")

@@ -80,6 +80,10 @@ class ClassroomAttentionPipeline:
         self.drop_detector.reset()
 
         meta = self.reader.inspect(input_video_path)
+        if not meta.is_valid:
+            err_msg = "; ".join(meta.validation_errors) if meta.validation_errors else "Corrupt or unreadable video file."
+            raise ValueError(f"Input video '{input_video_path.name}' is invalid or corrupt: {err_msg}")
+
         total_stream_frames = int(meta.duration_sec * self.sample_fps)
         if max_frames:
             total_stream_frames = min(total_stream_frames, max_frames)
@@ -301,6 +305,22 @@ class ClassroomAttentionPipeline:
         overall_mean = float(np.mean(all_student_means)) if all_student_means else 0.0
         att_rate = float(np.mean([1 if s >= 60 else 0 for s in all_student_means])) if all_student_means else 0.0
 
+        # Detailed observation counts across all student timelines
+        all_obs_categories = [
+            t["category"] for traj in student_trajectories.values() for t in traj
+        ]
+        high_obs_cnt = sum(1 for c in all_obs_categories if c in ["High", "Attentive"])
+        mod_obs_cnt = sum(1 for c in all_obs_categories if c == "Moderate")
+        low_obs_cnt = sum(1 for c in all_obs_categories if c in ["Low", "Inattentive"])
+        unc_obs_cnt = sum(1 for c in all_obs_categories if c == "Uncertain")
+
+        # Non-LLM Before-and-After Analysis (Phase 7)
+        from src.evaluation.before_after_analysis import compare_attention_intervals
+        before_after_result = compare_attention_intervals(
+            student_summaries=student_summaries,
+            frame_stats=frame_stats
+        ).to_dict()
+
         if progress_callback:
             progress_callback(1.0, f"Analysis complete in {total_time:.1f}s. Annotated video rendered successfully.")
 
@@ -316,12 +336,21 @@ class ClassroomAttentionPipeline:
             "total_students_tracked": len(student_summaries),
             "exited_camera_count": self.tracker.exited_count,
             "vanished_students_count": self.tracker.total_vanished_students,
+            "tracker_diagnostics": self.tracker.get_diagnostics(),
             "last_box_event": self.tracker.last_event or "STABLE",
             "class_average_attention": round(overall_mean, 1),
             "attentive_percentage": round(att_rate * 100, 1),
             "inattentive_percentage": round((1.0 - att_rate) * 100, 1),
+            "observation_breakdown": {
+                "high_count": high_obs_cnt,
+                "moderate_count": mod_obs_cnt,
+                "low_count": low_obs_cnt,
+                "uncertain_count": unc_obs_cnt,
+                "total_observations": len(all_obs_categories)
+            },
             "drop_events_count": len(all_drop_events),
             "drop_events": all_drop_events,
+            "before_after_assessment": before_after_result,
             "student_summaries": student_summaries,
             "frame_stats": frame_stats
         }

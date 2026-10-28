@@ -1,0 +1,413 @@
+{
+  "audit_timestamp": "2026-10-28 14:25:37",
+  "video_path": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\data\\clip 4.mp4",
+  "annotations_xml_path": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\data\\annotate for clip 4\\annotations.xml",
+  "checkpoint_path": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\checkpoints\\final_attention_model.joblib",
+  "dataset_alignment": {
+    "total_video_frames": 300,
+    "total_gt_boxes_in_xml": 6300,
+    "total_predicted_boxes": 6873,
+    "total_matched_observations": 5943,
+    "unmatched_missed_gt_boxes": 357,
+    "unmatched_false_positive_predictions": 930,
+    "matching_iou_threshold": 0.2,
+    "exclusion_reason_for_difference_to_6300": "357 GT boxes were missed by YOLO11-Pose (or IoU < 0.20). The evaluated set of 5943 consists ONLY of successfully localized student frames."
+  },
+  "student_discovery_audit": {
+    "gt_students_total": 21,
+    "students_detected_at_least_once": 21,
+    "students_detected_100pct_frames": 18,
+    "mean_per_student_coverage_percentage": 94.33,
+    "total_track_switches_across_classroom": 7,
+    "per_student_breakdown": [
+      {
+        "gt_student_id": 0,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          7
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 299,
+          "Low": 1
+        }
+      },
+      {
+        "gt_student_id": 1,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          1
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Low": 243,
+          "Moderate": 40,
+          "High": 17
+        }
+      },
+      {
+        "gt_student_id": 2,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          3
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Low": 159,
+          "Moderate": 106,
+          "High": 35
+        }
+      },
+      {
+        "gt_student_id": 3,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          2
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 291,
+          "Moderate": 9
+        }
+      },
+      {
+        "gt_student_id": 4,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          11
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Low": 34,
+          "Moderate": 86,
+          "High": 180
+        }
+      },
+      {
+        "gt_student_id": 5,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          6
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 223,
+          "Moderate": 77
+        }
+      },
+      {
+        "gt_student_id": 6,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          16,
+          20,
+          28
+        ],
+        "track_id_switches": 2,
+        "gt_label_breakdown": {
+          "High": 300
+        }
+      },
+      {
+        "gt_student_id": 7,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          9
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Moderate": 53,
+          "High": 247
+        }
+      },
+      {
+        "gt_student_id": 8,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          8
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 93,
+          "Moderate": 10,
+          "Low": 197
+        }
+      },
+      {
+        "gt_student_id": 9,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          13
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Low": 201,
+          "Moderate": 9,
+          "High": 90
+        }
+      },
+      {
+        "gt_student_id": 10,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          5
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 220,
+          "Moderate": 80
+        }
+      },
+      {
+        "gt_student_id": 11,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          18
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 286,
+          "Low": 14
+        }
+      },
+      {
+        "gt_student_id": 12,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          10
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 300
+        }
+      },
+      {
+        "gt_student_id": 13,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          12,
+          26,
+          30
+        ],
+        "track_id_switches": 2,
+        "gt_label_breakdown": {
+          "High": 239,
+          "Moderate": 61
+        }
+      },
+      {
+        "gt_student_id": 14,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          4
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "Low": 10,
+          "Moderate": 256,
+          "High": 34
+        }
+      },
+      {
+        "gt_student_id": 15,
+        "total_gt_frames": 300,
+        "matched_frames": 75,
+        "coverage_percentage": 25.0,
+        "associated_model_track_ids": [
+          31,
+          33
+        ],
+        "track_id_switches": 1,
+        "gt_label_breakdown": {
+          "High": 75
+        }
+      },
+      {
+        "gt_student_id": 16,
+        "total_gt_frames": 300,
+        "matched_frames": 260,
+        "coverage_percentage": 86.67,
+        "associated_model_track_ids": [
+          21,
+          32,
+          34
+        ],
+        "track_id_switches": 2,
+        "gt_label_breakdown": {
+          "Moderate": 249,
+          "High": 11
+        }
+      },
+      {
+        "gt_student_id": 17,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          17
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 300
+        }
+      },
+      {
+        "gt_student_id": 18,
+        "total_gt_frames": 300,
+        "matched_frames": 208,
+        "coverage_percentage": 69.33,
+        "associated_model_track_ids": [
+          25
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 208
+        }
+      },
+      {
+        "gt_student_id": 19,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          15
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 300
+        }
+      },
+      {
+        "gt_student_id": 20,
+        "total_gt_frames": 300,
+        "matched_frames": 300,
+        "coverage_percentage": 100.0,
+        "associated_model_track_ids": [
+          14
+        ],
+        "track_id_switches": 0,
+        "gt_label_breakdown": {
+          "High": 40,
+          "Moderate": 7,
+          "Low": 253
+        }
+      }
+    ]
+  },
+  "spatial_detection_metrics": {
+    "mean_matched_iou": 0.6306,
+    "precision_iou30": 83.54,
+    "recall_iou30": 91.14,
+    "f1_iou30": 87.18,
+    "precision_iou50": 70.27,
+    "recall_iou50": 76.67,
+    "f1_iou50": 73.33
+  },
+  "classification_3class": {
+    "evaluated_observations": 5943,
+    "overall_accuracy": 93.3,
+    "balanced_accuracy": 94.54,
+    "macro_f1": 0.9217,
+    "confusion_matrix": {
+      "classes": [
+        "High",
+        "Moderate",
+        "Low"
+      ],
+      "matrix": [
+        [
+          3477,
+          237,
+          74
+        ],
+        [
+          42,
+          987,
+          14
+        ],
+        [
+          27,
+          4,
+          1081
+        ]
+      ]
+    },
+    "per_class_metrics": {
+      "High": {
+        "precision": 98.05,
+        "recall": 91.79,
+        "f1_score": 0.9482,
+        "support": 3788
+      },
+      "Moderate": {
+        "precision": 80.37,
+        "recall": 94.63,
+        "f1_score": 0.8692,
+        "support": 1043
+      },
+      "Low": {
+        "precision": 92.47,
+        "recall": 97.21,
+        "f1_score": 0.9478,
+        "support": 1112
+      }
+    }
+  },
+  "classification_binary": {
+    "accuracy": 93.61,
+    "balanced_accuracy": 94.29,
+    "f1_score": 0.9482,
+    "confusion_matrix": {
+      "classes": [
+        "High",
+        "Low"
+      ],
+      "matrix": [
+        [
+          3477,
+          311
+        ],
+        [
+          69,
+          2086
+        ]
+      ]
+    }
+  },
+  "critical_methodological_findings": {
+    "train_test_overlap_leakage": "CONFIRMED: final_attention_model.joblib was fit on 5,732 frames extracted directly from data/clip 4.mp4. Evaluating the model on data/clip 4.mp4 constitutes a train-set resubstitution test.",
+    "temporal_autocorrelation_leakage": "CONFIRMED: The cross-validation during training used StratifiedKFold(shuffle=True) on 30 FPS video frames, placing adjacent frames (1/30 second apart) in train and validation sets simultaneously.",
+    "evaluation_attrition_bias": "CONFIRMED: 357 ground truth boxes (5.7%) were missed by the detector and dropped from classification evaluation rather than evaluated as detection failures or penalized in attention metrics.",
+    "discovery_rate_semantic_distinction": "CONFIRMED: 21/21 student discovery denotes that all 21 students were matched at least once during the clip. It does NOT denote 100% continuous temporal tracking coverage."
+  }
+}

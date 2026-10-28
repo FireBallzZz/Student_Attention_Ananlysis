@@ -81,7 +81,15 @@
                   <span class="sample-card-title">Clip 4 (Annotated Benchmark Clip)</span>
                   <span class="sample-card-tag">Ground Truth</span>
                 </div>
-                <p class="sample-card-desc">Full room 21 students annotated across 300 frames. 100% census tracking verified.</p>
+                <p class="sample-card-desc">Full room 21 students annotated across 300 frames with individual High/Moderate/Low labels.</p>
+              </div>
+
+              <div class="sample-card" onclick="selectSample('clip_11', this)">
+                <div class="sample-card-head">
+                  <span class="sample-card-title">Clip 11 (Independent Evaluation Benchmark)</span>
+                  <span class="sample-card-tag" style="background: rgba(14, 165, 233, 0.2); color: var(--accent-cyan);">Independent Test</span>
+                </div>
+                <p class="sample-card-desc">Quarter overview, 18–20 students. Completely unseen during training for out-of-distribution evaluation.</p>
               </div>
             </div>
           </div>
@@ -91,7 +99,7 @@
             <div class="dropzone" id="video-dropzone" onclick="document.getElementById('video-file-input').click()">
               <div class="dropzone-icon">📁</div>
               <p class="dropzone-text">Click or drag & drop classroom video here</p>
-              <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Supports MP4, AVI, MOV, WEBM</p>
+              <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Supports MP4, AVI, MOV, WEBM (Validation enforced)</p>
               <div class="dropzone-file-name" id="selected-file-name" style="display: none;"></div>
               <input type="file" id="video-file-input" accept="video/*" style="display: none;" onchange="handleFileSelect(event)">
             </div>
@@ -123,8 +131,8 @@
             </div>
             <div class="stage-indicators">
               <span>YOLO11 Detection</span>
-              <span>DeepSORT Tracking</span>
-              <span>Attention Scoring</span>
+              <span>Census Tracking</span>
+              <span>16D Feature Inference</span>
               <span>Diagnostic Render</span>
             </div>
           </div>
@@ -176,40 +184,189 @@
               <span class="metric-sub" id="metric-class-status">Observable attention index</span>
             </div>
             <div class="metric-card">
-              <span class="metric-label">Student Census (Total Count)</span>
+              <span class="metric-label">Student Census</span>
               <span class="metric-value" id="metric-census-count" style="color: var(--accent-cyan);">--</span>
-              <span class="metric-sub">Counted seated students in room</span>
+              <span class="metric-sub">Cumulative unique students</span>
             </div>
             <div class="metric-card">
-              <span class="metric-label">Active / Tracked Students</span>
+              <span class="metric-label">Active / Live Tracks</span>
               <span class="metric-value" id="metric-total-students">--</span>
-              <span class="metric-sub">Live & frame-reference tracking</span>
+              <span class="metric-sub">Currently visible in camera</span>
             </div>
             <div class="metric-card">
-              <span class="metric-label">Exited Camera View</span>
+              <span class="metric-label">Memory-Coasting Tracks</span>
+              <span class="metric-value" id="metric-coasting-tracks" style="color: #A5B4FC;">--</span>
+              <span class="metric-sub">Frame-reference preserved</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Exited / Vanished</span>
               <span class="metric-value" id="metric-exited-count" style="color: var(--uncertain);">--</span>
-              <span class="metric-sub">Left boundary without error</span>
+              <span class="metric-sub">Boundary exit or occluded</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">High Attention</span>
+              <span class="metric-value" id="metric-high-obs" style="color: var(--attentive);">--</span>
+              <span class="metric-sub" id="metric-high-sub">Observations</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Moderate Attention</span>
+              <span class="metric-value" id="metric-mod-obs" style="color: var(--uncertain);">--</span>
+              <span class="metric-sub" id="metric-mod-sub">Observations</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Low Attention</span>
+              <span class="metric-value" id="metric-low-obs" style="color: var(--inattentive);">--</span>
+              <span class="metric-sub" id="metric-low-sub">Observations</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Uncertain / Gated</span>
+              <span class="metric-value" id="metric-unc-obs" style="color: var(--text-dim);">--</span>
+              <span class="metric-sub" id="metric-unc-sub">Distant or occluded</span>
             </div>
             <div class="metric-card">
               <span class="metric-label">Box Dynamics Status</span>
-              <span class="metric-value" id="metric-box-dynamics" style="font-size: 18px; color: #FFFFFF;">--</span>
-              <span class="metric-sub">Increase / vanish detection</span>
+              <span class="metric-value" id="metric-box-dynamics" style="font-size: 16px; color: #FFFFFF;">--</span>
+              <span class="metric-sub">Tracker event state</span>
             </div>
-            <div class="metric-card">
-              <span class="metric-label">Attentive Ratio</span>
-              <span class="metric-value" id="metric-attentive-pct" style="color: var(--attentive);">--</span>
-              <span class="metric-sub">Focusing on instructional area</span>
+          </div>
+        </div>
+
+        <!-- Non-LLM Learning Improvement Assessment Section -->
+        <div class="glass-card before-after-card" id="before-after-section" style="display: none;">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            Learning Improvement Assessment (Observable Behavioral Comparison)
+          </div>
+
+          <div class="epistemic-disclaimer-box" id="epistemic-disclaimer-text">
+            <strong>SCIENTIFIC INTEGRITY NOTICE:</strong> Observable attention scores quantify physical behavioral markers (head orientation, eye gaze proxy, torso posture, and motor dynamics). Shifts in attention between intervals indicate changes in observable classroom engagement, not direct proof of internal cognitive learning outcomes.
+          </div>
+
+          <!-- Statistical Effect Size Banner -->
+          <div class="stat-effect-banner">
+            <div class="stat-pill">
+              <span class="stat-pill-label">Delta Mean Attention</span>
+              <span class="stat-pill-value" id="ba-delta-mean">--</span>
             </div>
-            <div class="metric-card">
-              <span class="metric-label">Inattentive Ratio</span>
-              <span class="metric-value" id="metric-inattentive-pct" style="color: var(--inattentive);">--</span>
-              <span class="metric-sub">Head down / disengaged</span>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Welch's t-Statistic</span>
+              <span class="stat-pill-value" id="ba-t-stat">--</span>
             </div>
-            <div class="metric-card">
-              <span class="metric-label">Attention Drop Alerts</span>
-              <span class="metric-value" id="metric-drops-count" style="color: var(--inattentive);">--</span>
-              <span class="metric-sub">Sustained drops detected</span>
+            <div class="stat-pill">
+              <span class="stat-pill-label">p-Value</span>
+              <span class="stat-pill-value" id="ba-p-val">--</span>
             </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Effect Size (Cohen's d)</span>
+              <span class="stat-pill-value" id="ba-cohens-d">--</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-pill-label">Statistical Status</span>
+              <span class="significance-badge badge-sig-yes" id="ba-sig-badge">--</span>
+            </div>
+          </div>
+
+          <!-- Side-by-Side Intervals Comparison -->
+          <div class="intervals-comparison-grid">
+            <!-- Baseline (Before) -->
+            <div class="interval-panel">
+              <div class="interval-panel-head">
+                <span class="interval-panel-title" id="ba-pre-name">Baseline (Interval 1)</span>
+                <span class="interval-badge" id="ba-pre-range">0.0s – 5.0s</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Mean Attention Score</span>
+                <span id="ba-pre-mean" style="color: var(--attentive);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Std Dev / Median</span>
+                <span id="ba-pre-std-med">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Valid Observations</span>
+                <span id="ba-pre-valid-obs">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Missingness / Occlusion Rate</span>
+                <span id="ba-pre-missing-rate" style="color: var(--uncertain);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>High Attention Ratio</span>
+                <span id="ba-pre-high-pct" style="color: var(--attentive);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Moderate Attention Ratio</span>
+                <span id="ba-pre-mod-pct" style="color: var(--uncertain);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Low Attention Ratio</span>
+                <span id="ba-pre-low-pct" style="color: var(--inattentive);">--</span>
+              </div>
+            </div>
+
+            <!-- Post-Intervention (After) -->
+            <div class="interval-panel">
+              <div class="interval-panel-head">
+                <span class="interval-panel-title" id="ba-post-name">Post-Intervention (Interval 2)</span>
+                <span class="interval-badge" id="ba-post-range">5.0s – 10.0s</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Mean Attention Score</span>
+                <span id="ba-post-mean" style="color: var(--attentive);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Std Dev / Median</span>
+                <span id="ba-post-std-med">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Valid Observations</span>
+                <span id="ba-post-valid-obs">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Missingness / Occlusion Rate</span>
+                <span id="ba-post-missing-rate" style="color: var(--uncertain);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>High Attention Ratio</span>
+                <span id="ba-post-high-pct" style="color: var(--attentive);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Moderate Attention Ratio</span>
+                <span id="ba-post-mod-pct" style="color: var(--uncertain);">--</span>
+              </div>
+              <div class="interval-stat-row">
+                <span>Low Attention Ratio</span>
+                <span id="ba-post-low-pct" style="color: var(--inattentive);">--</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observable Behavioral Shifts Table -->
+          <div>
+            <span style="font-size: 13px; font-weight: 600; color: #FFFFFF;">Observable Physical Behavioral Shifts:</span>
+            <table class="behavioral-table">
+              <thead>
+                <tr>
+                  <th>Observable Physical Marker</th>
+                  <th>Baseline %</th>
+                  <th>Post-Intervention %</th>
+                  <th>Shift (% Points)</th>
+                </tr>
+              </thead>
+              <tbody id="ba-behavior-tbody">
+                <!-- Dynamically generated rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Interactive Temporal Split Re-computation Bar -->
+          <div class="split-recompute-bar">
+            <span style="font-size: 12px; color: var(--text-muted);">Custom Split Timestamp (seconds):</span>
+            <input type="number" id="split-timestamp-input" class="split-input" min="1.0" max="60.0" step="0.5" value="5.0">
+            <button class="btn-secondary" onclick="recomputeIntervalComparison()">
+              🔄 Recompute Interval Comparison
+            </button>
+            <span id="split-recompute-status" style="font-size: 11px; color: var(--text-dim); margin-left: 8px;"></span>
           </div>
         </div>
 

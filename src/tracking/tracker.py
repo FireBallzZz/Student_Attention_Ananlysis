@@ -50,9 +50,21 @@ class BaseStudentTracker(ABC):
 class ByteTrackTracker(BaseStudentTracker):
     """ByteTrack wrapper leveraging Ultralytics integrated multi-object tracking."""
 
-    def __init__(self, model_path: str = "classroom_attention_research/checkpoints/yolo11n-pose.pt", conf_thresh: float = 0.35, device: str = "cuda:0"):
+    def __init__(self, model_path: Optional[str] = None, conf_thresh: float = 0.35, device: str = "cuda:0"):
         self.device = device if torch.cuda.is_available() else "cpu"
         self.tracker_name = "ByteTrack"
+        if model_path is None:
+            candidates = [
+                Path("checkpoints/yolo11n-pose.pt"),
+                Path(__file__).resolve().parent.parent.parent / "checkpoints" / "yolo11n-pose.pt",
+                Path("yolo11n-pose.pt"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    model_path = str(c)
+                    break
+            if model_path is None:
+                model_path = "checkpoints/yolo11n-pose.pt"
         self.model = YOLO(model_path)
         self.conf_thresh = conf_thresh
         self.prev_centers: Dict[int, Tuple[float, float]] = {}
@@ -392,9 +404,10 @@ class ClassroomCensusTracker(BaseStudentTracker):
                 box = self.tracks[tid]["bbox"]
 
                 # Check if student moved out of camera bounds
-                near_edge = (box[0] < 15 or box[1] < 15 or box[2] > frame_w - 15 or box[3] > frame_h - 15)
+                near_edge = (box[0] < 20 or box[1] < 20 or box[2] > frame_w - 20 or box[3] > frame_h - 20)
+                exit_thresh = max(2, self.max_disappeared // 3)
 
-                if near_edge and self.tracks[tid]["disappeared"] > 8:
+                if near_edge and self.tracks[tid]["disappeared"] > exit_thresh:
                     self.tracks[tid]["status"] = "EXITED"
                     if tid not in self.exited_track_ids:
                         self.exited_track_ids.add(tid)
@@ -482,4 +495,25 @@ class ClassroomCensusTracker(BaseStudentTracker):
             ))
 
         return results_tracked
+
+    def get_diagnostics(self) -> Dict:
+        """Return diagnostic tracking summary and census statistics."""
+        coasting_cnt = len([t for t in self.tracks.values() if t["status"] == "COASTING"])
+        return {
+            "total_unique_tracks": self.next_track_id - 1,
+            "initial_census_count": self.initial_census_count,
+            "census_count": self.census_count,
+            "current_active_count": self.active_count,
+            "active_tracks": self.active_count,
+            "current_coasting_count": coasting_cnt,
+            "coasting_tracks": coasting_cnt,
+            "total_exited_students": self.total_exited_students,
+            "exited_tracks": self.total_exited_students,
+            "total_vanished_students": self.total_vanished_students,
+            "vanished_tracks": self.total_vanished_students,
+            "census_established": self.census_established,
+            "frame_count": self.frame_count,
+            "last_event": self.last_event or "STABLE"
+        }
+
 

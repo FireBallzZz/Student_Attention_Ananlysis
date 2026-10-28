@@ -198,13 +198,52 @@ function renderAnalysisResults(data) {
   document.getElementById("metric-class-avg").innerText = `${data.class_average_attention}%`;
   document.getElementById("metric-census-count").innerText = data.census_student_count || data.total_students_tracked;
   document.getElementById("metric-total-students").innerText = data.total_students_tracked;
+
+  const diag = data.tracker_diagnostics || {};
+  const coastingEl = document.getElementById("metric-coasting-tracks");
+  if (coastingEl) coastingEl.innerText = diag.coasting_tracks ?? 0;
+
   document.getElementById("metric-exited-count").innerText = data.exited_camera_count || 0;
   document.getElementById("metric-box-dynamics").innerText = data.last_box_event || "STABLE";
-  document.getElementById("metric-attentive-pct").innerText = `${data.attentive_percentage}%`;
-  document.getElementById("metric-inattentive-pct").innerText = `${data.inattentive_percentage}%`;
-  document.getElementById("metric-drops-count").innerText = data.drop_events_count;
 
-  // 4. Populate Student Trajectory Cards
+  // High, Moderate, Low, Uncertain observation distribution
+  const obs = data.observation_breakdown || {};
+  const totalObs = Math.max(1, obs.total_observations || 1);
+  const highCnt = obs.high_count || 0;
+  const modCnt = obs.moderate_count || 0;
+  const lowCnt = obs.low_count || 0;
+  const uncCnt = obs.uncertain_count || 0;
+
+  const highObsEl = document.getElementById("metric-high-obs");
+  if (highObsEl) {
+    highObsEl.innerText = `${highCnt}`;
+    document.getElementById("metric-high-sub").innerText = `${((highCnt / totalObs) * 100).toFixed(1)}% of observations`;
+  }
+  const modObsEl = document.getElementById("metric-mod-obs");
+  if (modObsEl) {
+    modObsEl.innerText = `${modCnt}`;
+    document.getElementById("metric-mod-sub").innerText = `${((modCnt / totalObs) * 100).toFixed(1)}% of observations`;
+  }
+  const lowObsEl = document.getElementById("metric-low-obs");
+  if (lowObsEl) {
+    lowObsEl.innerText = `${lowCnt}`;
+    document.getElementById("metric-low-sub").innerText = `${((lowCnt / totalObs) * 100).toFixed(1)}% of observations`;
+  }
+  const uncObsEl = document.getElementById("metric-unc-obs");
+  if (uncObsEl) {
+    uncObsEl.innerText = `${uncCnt}`;
+    document.getElementById("metric-unc-sub").innerText = `${((uncCnt / totalObs) * 100).toFixed(1)}% occluded / missing`;
+  }
+
+  // 4. Populate Non-LLM Learning Improvement Assessment
+  if (data.before_after_assessment && data.before_after_assessment.has_comparison) {
+    renderBeforeAfterSection(data.before_after_assessment);
+  } else {
+    const baSec = document.getElementById("before-after-section");
+    if (baSec) baSec.style.display = "none";
+  }
+
+  // 5. Populate Student Trajectory Cards
   const studentsSection = document.getElementById("students-section");
   const studentsGrid = document.getElementById("students-grid");
   studentsGrid.innerHTML = "";
@@ -216,7 +255,7 @@ function renderAnalysisResults(data) {
       card.className = "student-card";
 
       let badgeClass = "badge-attentive";
-      if (s.predominant_category === "Inattentive") badgeClass = "badge-inattentive";
+      if (s.predominant_category === "Inattentive" || s.predominant_category === "Low") badgeClass = "badge-inattentive";
       else if (s.predominant_category === "Uncertain") badgeClass = "badge-uncertain";
 
       const barColor = s.mean_score >= 60 ? "var(--attentive)" : (s.mean_score >= 40 ? "var(--uncertain)" : "var(--inattentive)");
@@ -246,7 +285,7 @@ function renderAnalysisResults(data) {
     studentsSection.style.display = "none";
   }
 
-  // 5. Populate Attention Drops & Recommendations
+  // 6. Populate Attention Drops & Recommendations
   const dropsSection = document.getElementById("drops-section");
   const dropFeed = document.getElementById("drop-feed");
   dropFeed.innerHTML = "";
@@ -282,4 +321,115 @@ function renderAnalysisResults(data) {
 
   // Scroll smoothly to results
   player.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function renderBeforeAfterSection(ba) {
+  const section = document.getElementById("before-after-section");
+  if (!ba || !ba.has_comparison) {
+    section.style.display = "none";
+    return;
+  }
+  section.style.display = "block";
+
+  // Banner metrics
+  const deltaMeanEl = document.getElementById("ba-delta-mean");
+  const delta = ba.delta_mean_attention;
+  deltaMeanEl.innerText = `${delta > 0 ? "+" : ""}${delta}%`;
+  deltaMeanEl.style.color = delta >= 0 ? "var(--attentive)" : "var(--inattentive)";
+
+  document.getElementById("ba-t-stat").innerText = ba.t_statistic !== null ? ba.t_statistic.toFixed(2) : "N/A";
+  document.getElementById("ba-p-val").innerText = ba.p_value !== null ? ba.p_value.toFixed(4) : "N/A";
+
+  const cd = ba.cohens_d !== null ? `${ba.cohens_d.toFixed(2)} (${ba.effect_size_label})` : "N/A";
+  document.getElementById("ba-cohens-d").innerText = cd;
+
+  const badgeEl = document.getElementById("ba-sig-badge");
+  if (ba.statistically_significant) {
+    badgeEl.className = "significance-badge badge-sig-yes";
+    badgeEl.innerText = "Significant Shift (p < 0.05)";
+  } else {
+    badgeEl.className = "significance-badge badge-sig-no";
+    badgeEl.innerText = "No Stat. Difference (p ≥ 0.05)";
+  }
+
+  // Baseline panel
+  const pre = ba.pre_interval;
+  document.getElementById("ba-pre-name").innerText = pre.interval_name;
+  document.getElementById("ba-pre-range").innerText = `${pre.start_sec}s – ${pre.end_sec}s (${pre.duration_sec}s)`;
+  document.getElementById("ba-pre-mean").innerText = `${pre.mean_attention}%`;
+  document.getElementById("ba-pre-std-med").innerText = `±${pre.std_attention}% (Med: ${pre.median_attention}%)`;
+  document.getElementById("ba-pre-valid-obs").innerText = `${pre.valid_observations} frames`;
+  document.getElementById("ba-pre-missing-rate").innerText = `${pre.missingness_rate}%`;
+  document.getElementById("ba-pre-high-pct").innerText = `${pre.high_percentage}% (${pre.high_count} obs)`;
+  document.getElementById("ba-pre-mod-pct").innerText = `${pre.moderate_percentage}% (${pre.moderate_count} obs)`;
+  document.getElementById("ba-pre-low-pct").innerText = `${pre.low_percentage}% (${pre.low_count} obs)`;
+
+  // Post panel
+  const post = ba.post_interval;
+  document.getElementById("ba-post-name").innerText = post.interval_name;
+  document.getElementById("ba-post-range").innerText = `${post.start_sec}s – ${post.end_sec}s (${post.duration_sec}s)`;
+  document.getElementById("ba-post-mean").innerText = `${post.mean_attention}%`;
+  document.getElementById("ba-post-std-med").innerText = `±${post.std_attention}% (Med: ${post.median_attention}%)`;
+  document.getElementById("ba-post-valid-obs").innerText = `${post.valid_observations} frames`;
+  document.getElementById("ba-post-missing-rate").innerText = `${post.missingness_rate}%`;
+  document.getElementById("ba-post-high-pct").innerText = `${post.high_percentage}% (${post.high_count} obs)`;
+  document.getElementById("ba-post-mod-pct").innerText = `${post.moderate_percentage}% (${post.moderate_count} obs)`;
+  document.getElementById("ba-post-low-pct").innerText = `${post.low_percentage}% (${post.low_count} obs)`;
+
+  // Behavioral Table
+  const tbody = document.getElementById("ba-behavior-tbody");
+  tbody.innerHTML = "";
+  if (ba.behavioral_shifts && ba.behavioral_shifts.length > 0) {
+    ba.behavioral_shifts.forEach(row => {
+      const tr = document.createElement("tr");
+      const deltaColor = row.delta_percentage > 0 ? "var(--attentive)" : (row.delta_percentage < 0 ? "var(--inattentive)" : "var(--text-muted)");
+      tr.innerHTML = `
+        <td><strong>${row.behavior}</strong></td>
+        <td>${row.pre_percentage}%</td>
+        <td>${row.post_percentage}%</td>
+        <td style="color: ${deltaColor}; font-weight: 600;">${row.delta_percentage > 0 ? "+" : ""}${row.delta_percentage}%</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+}
+
+async function recomputeIntervalComparison() {
+  if (!currentAnalysisData || !currentAnalysisData.job_id) {
+    alert("Please analyze a video first before recomputing interval comparisons.");
+    return;
+  }
+  const splitInput = document.getElementById("split-timestamp-input");
+  const splitSec = parseFloat(splitInput.value);
+  const statusEl = document.getElementById("split-recompute-status");
+
+  if (isNaN(splitSec) || splitSec <= 0) {
+    alert("Please enter a valid positive split timestamp in seconds.");
+    return;
+  }
+
+  statusEl.innerText = "Recomputing interval statistics...";
+
+  try {
+    const res = await fetch("/api/compare_intervals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        job_id: currentAnalysisData.job_id,
+        split_timestamp_sec: splitSec
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || "Failed to compare intervals");
+    }
+    const updatedBa = await res.json();
+    currentAnalysisData.before_after_assessment = updatedBa;
+    renderBeforeAfterSection(updatedBa);
+    statusEl.innerText = `Updated with split at ${splitSec}s.`;
+    setTimeout(() => { statusEl.innerText = ""; }, 3000);
+  } catch (err) {
+    statusEl.innerText = `Error: ${err.message}`;
+    console.error(err);
+  }
 }

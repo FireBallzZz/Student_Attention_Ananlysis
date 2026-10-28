@@ -71,6 +71,38 @@ class VideoReader:
                 validation_errors=["File does not exist."]
             )
 
+        try:
+            if video_path.stat().st_size == 0:
+                return VideoMetadata(
+                    filepath=str(video_path),
+                    filename=video_path.name,
+                    session_id=video_path.parent.name,
+                    clip_id=video_path.stem,
+                    width=0,
+                    height=0,
+                    fps=0.0,
+                    total_frames=0,
+                    duration_sec=0.0,
+                    fourcc="",
+                    is_valid=False,
+                    validation_errors=["File is empty (0 bytes)."]
+                )
+        except OSError as e:
+            return VideoMetadata(
+                filepath=str(video_path),
+                filename=video_path.name,
+                session_id=video_path.parent.name,
+                clip_id=video_path.stem,
+                width=0,
+                height=0,
+                fps=0.0,
+                total_frames=0,
+                duration_sec=0.0,
+                fourcc="",
+                is_valid=False,
+                validation_errors=[f"OS error reading file: {str(e)}"]
+            )
+
         cap = cv2.VideoCapture(str(video_path))
         if not cap.isOpened():
             return VideoMetadata(

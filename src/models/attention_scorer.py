@@ -19,10 +19,11 @@ class AttentionScoreResult:
     track_id: int
     timestamp_sec: float
     score: float                 # Calibrated score 0-100
-    category: str                # "Attentive", "Moderate", "Inattentive"
+    category: str                # "Attentive", "Moderate", "Inattentive", "Uncertain"
     model_confidence: float
-    raw_probability: float       # P(Attentive | X) in [0, 1]
+    raw_probability: float       # P(High | X) in [0, 1]
     is_uncertain_due_to_missingness: bool
+    predicted_class: str = "High" # Canonical thesis 3-class label: "High", "Moderate", "Low", "Uncertain"
 
 
 class AttentionScorer:
@@ -40,17 +41,26 @@ class AttentionScorer:
         self.model_name = "Observable Physical Behavior Index (Fallback)"
 
         if checkpoint_path is None:
-            default_ckpt = Path("classroom_attention_research/checkpoints/final_attention_model.joblib")
-            if default_ckpt.exists():
-                checkpoint_path = default_ckpt
+            # Multi-candidate path resolution
+            candidates = [
+                Path(__file__).resolve().parent.parent.parent / "checkpoints" / "final_attention_model.joblib",
+                Path("checkpoints/final_attention_model.joblib"),
+                Path("classroom_attention_research/checkpoints/final_attention_model.joblib"),
+            ]
+            for candidate in candidates:
+                if candidate.exists():
+                    checkpoint_path = candidate
+                    break
 
         if use_supervised_checkpoint and checkpoint_path is not None and checkpoint_path.exists():
             data = joblib.load(checkpoint_path)
             self.model = data["model"]
             self.feature_columns = data.get("feature_columns", FEATURE_COLUMNS)
             self.classes = data.get("classes", ["High", "Moderate", "Low"])
-            self.model_name = "Final Calibrated Ensemble Model (Balanced Accuracy: 88.1%)"
+            self.model_name = "Final Calibrated Ensemble Model (Random Forest)"
             print(f"[AttentionScorer] Successfully loaded production model from {checkpoint_path}")
+        else:
+            print(f"[AttentionScorer] Warning: No supervised model checkpoint found. Running on heuristic physical index fallback.")
 
     def score(self, fv: FrameFeatureVector) -> AttentionScoreResult:
         """
@@ -72,12 +82,19 @@ class AttentionScorer:
 
             calibrated_score = round(float(np.clip(100.0 * (p_high + 0.5 * p_mod), 5.0, 98.0)), 1)
             best_cls = max(class_map, key=class_map.get)
-            if best_cls == "High":
+            
+            if is_uncertain:
+                category = "Uncertain"
+                pred_cls = "Uncertain"
+            elif best_cls == "High":
                 category = "Attentive"
+                pred_cls = "High"
             elif best_cls == "Low":
                 category = "Inattentive"
+                pred_cls = "Low"
             else:
                 category = "Moderate"
+                pred_cls = "Moderate"
 
             return AttentionScoreResult(
                 track_id=fv.track_id,
@@ -86,7 +103,8 @@ class AttentionScorer:
                 category=category,
                 model_confidence=round(float(max(probs)), 2),
                 raw_probability=round(float(p_high), 4),
-                is_uncertain_due_to_missingness=is_uncertain
+                is_uncertain_due_to_missingness=is_uncertain,
+                predicted_class=pred_cls
             )
 
         # 2. Heuristic Fallback If No Model Loaded
