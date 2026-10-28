@@ -5,6 +5,7 @@ and compute occlusion/visibility flags.
 """
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional, Tuple
 import numpy as np
 import torch
@@ -60,7 +61,7 @@ class YOLO11PoseDetector:
 
     def __init__(
         self,
-        model_name: str = "classroom_attention_research/checkpoints/yolo11n-pose.pt",
+        model_name: Optional[str] = None,
         conf_threshold: float = 0.18,
         iou_threshold: float = 0.50,
         imgsz: int = 1280,
@@ -69,7 +70,21 @@ class YOLO11PoseDetector:
         if device is None:
             device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.device = device
-        self.model_name = model_name
+        
+        if model_name is None or model_name == "classroom_attention_research/checkpoints/yolo11n-pose.pt":
+            candidates = [
+                Path("checkpoints/yolo11n-pose.pt"),
+                Path(__file__).resolve().parent.parent.parent / "checkpoints" / "yolo11n-pose.pt",
+                Path("yolo11n-pose.pt"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    model_name = str(c)
+                    break
+            if model_name is None or not Path(model_name).exists():
+                model_name = "checkpoints/yolo11n-pose.pt"
+                
+        self.model_name = str(model_name)
         self.conf_threshold = conf_threshold
         self.iou_threshold = iou_threshold
         self.imgsz = imgsz

@@ -1,0 +1,124 @@
+{
+  "audit_timestamp": "2026-10-28 15:10:51",
+  "audit_directory": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\audit",
+  "model_identity": {
+    "checkpoint_path": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\checkpoints\\final_attention_model.joblib",
+    "model_class": "RandomForestClassifier",
+    "n_estimators": 120,
+    "max_depth": 12,
+    "class_weight": "balanced",
+    "criterion": "gini",
+    "n_features_in": 16,
+    "classes": [
+      "High",
+      "Low",
+      "Moderate"
+    ],
+    "trained_samples_recorded": 5732,
+    "cv_accuracy_recorded": 0.8954989532449407,
+    "cv_balanced_accuracy_recorded": 0.8809598847347617,
+    "feature_schema_columns": [
+      "head_pitch_deg",
+      "head_yaw_deg",
+      "head_roll_deg",
+      "head_pose_confidence",
+      "gaze_horizontal",
+      "gaze_vertical",
+      "torso_angle_deg",
+      "shoulder_tilt_deg",
+      "movement_energy",
+      "bbox_area_ratio",
+      "detection_confidence",
+      "missing_face",
+      "missing_head_pose",
+      "missing_gaze",
+      "missing_torso",
+      "is_distant"
+    ],
+    "matches_canonical_schema": true
+  },
+  "clip_11_audit": {
+    "clip_11_path": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\data\\clip_011.mp4",
+    "clip_11_file_exists": true,
+    "clip_11_size_bytes": 2035031,
+    "excluded_from_model_fitting": true,
+    "excluded_from_hyperparameter_tuning": true,
+    "excluded_from_threshold_calibration": true,
+    "excluded_from_model_selection": true,
+    "clip_11_has_ground_truth_xml": false,
+    "clip_11_annotation_candidates_found": [],
+    "classification_benchmarking_status": "BLOCKED (Missing individual ground truth labels for Clip 11)"
+  },
+  "existing_benchmark_audit": {
+    "artifact_file": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\independent_benchmark_metrics.json",
+    "actual_video_evaluated": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\data\\clip 4.mp4",
+    "actual_annotations_used": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\data\\annotate for clip 4\\annotations.xml",
+    "evaluated_dataset_identity": "data/clip 4.mp4 (NOT Clip 11)",
+    "reported_overall_accuracy": 93.3,
+    "reported_balanced_accuracy": 94.54,
+    "total_matched_observations": 5943,
+    "unmatched_missed_gt_boxes": 357,
+    "scientific_nature_of_reported_metrics": "Train-Set Re-substitution on Clip 4 (Model trained on 5,732 frames of Clip 4)"
+  },
+  "statistical_validity_audit": {
+    "frame_level_pooled_test": {
+      "n_observations": 2000,
+      "degrees_of_freedom": "Artificially inflated to ~1998",
+      "t_statistic": -6.2104,
+      "p_value": 0.0,
+      "methodological_flaw": "Severe pseudo-replication; violates i.i.d. assumption due to temporal autocorrelation (AR(1) ~0.90) and intra-student clustering."
+    },
+    "student_level_aggregated_test": {
+      "n_students": 20,
+      "degrees_of_freedom": 19,
+      "t_statistic": -2.6834,
+      "p_value": 0.014707,
+      "methodological_status": "Valid unit of analysis; respects student independence and collapses autocorrelated frames into per-student mean."
+    },
+    "recommended_hierarchical_models": [
+      "Linear Mixed-Effects Models (LMM) with random student intercepts: Score ~ Interval + (1 | Student_ID)",
+      "Generalized Estimating Equations (GEE) with autoregressive AR(1) working correlation structure",
+      "Student-level paired Wilcoxon signed-rank test for non-parametric robustness"
+    ],
+    "epistemic_learning_gain_boundary": "Attention scores measure observable behavioral proxies (head orientation, gaze deviations, posture slump). They do not measure internal cognitive absorption, comprehension, or learning mastery."
+  },
+  "clip_11_live_execution": {
+    "execution_duration_sec": 21.32,
+    "processed_frames": 30,
+    "pipeline_fps": 1.4,
+    "census_student_count": 22,
+    "total_students_tracked": 22,
+    "tracker_diagnostics": {
+      "total_unique_tracks": 22,
+      "initial_census_count": 21,
+      "census_count": 22,
+      "current_active_count": 22,
+      "active_tracks": 22,
+      "current_coasting_count": 3,
+      "coasting_tracks": 3,
+      "total_exited_students": 1,
+      "exited_tracks": 1,
+      "total_vanished_students": 0,
+      "vanished_tracks": 0,
+      "census_established": true,
+      "frame_count": 30,
+      "last_event": "STABLE"
+    },
+    "class_average_attention": 67.0,
+    "observation_breakdown": {
+      "high_count": 2,
+      "moderate_count": 0,
+      "low_count": 7,
+      "uncertain_count": 619,
+      "total_observations": 628
+    },
+    "output_video_created": true,
+    "output_video_size_bytes": 2069641,
+    "classification_vs_ground_truth": "BLOCKED (Cannot compute TP/FP/TN/FN: no ground-truth XML exists for Clip 11)"
+  },
+  "verdict": {
+    "final_status": "BLOCKED",
+    "status_explanation": "Independent out-of-sample classification benchmarking is BLOCKED because data/clip_011.mp4 lacks verified individual-level ground-truth attention annotations. The existing reported metrics (93.3% accuracy) were confirmed to originate exclusively from data/clip 4.mp4, representing train-set re-substitution. The computer vision ingestion, census tracking, multimodal feature extraction, and runtime classification pipeline are verified to execute reliably on Clip 11, but scientific generalization claims remain quantitatively unverified until independent ground-truth annotations are established.",
+    "single_most_important_next_action": "Produce peer-reviewed, multi-annotator CVAT individual attention annotations (High, Moderate, Low) for data/clip_011.mp4 to enable the first genuine out-of-distribution evaluation."
+  }
+}
