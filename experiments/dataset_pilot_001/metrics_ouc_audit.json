@@ -1,0 +1,55 @@
+{
+  "experiment": "Experiment C: Existing OUC-CGE Pilot Audit",
+  "dataset": "OUC-CGE (Ocean University of China Classroom Group Engagement)",
+  "dataset_doi": "10.17605/OSF.IO/BRD2C",
+  "license": "CC BY 4.0",
+  "total_clips_present": 24,
+  "valid_dynamic_clips_evaluated": 21,
+  "excluded_frozen_clips": [
+    "low/view7.mp4",
+    "low/view8.mp4"
+  ],
+  "excluded_duplicate_clips": [
+    "low/view2.mp4 (byte identical to low/view1.mp4)"
+  ],
+  "task": "Group-Level Engagement Classification (Clip Aggregation)",
+  "models": {
+    "LogisticRegression_LOO": {
+      "accuracy": 0.9524,
+      "balanced_accuracy": 0.9583,
+      "macro_f1": 0.9519,
+      "confusion_matrix": [
+        [
+          9,
+          0
+        ],
+        [
+          1,
+          11
+        ]
+      ]
+    },
+    "RandomForest_LOO": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0,
+      "confusion_matrix": [
+        [
+          9,
+          0
+        ],
+        [
+          0,
+          12
+        ]
+      ]
+    }
+  },
+  "session_leakage_audit": {
+    "finding": "SEVERE MULTI-VIEW SYNCHRONIZATION LEAKAGE",
+    "description": "The 21 dynamic clips stem from only TWO physical classroom recordings: Session 1 (High engagement, views 1-12) and Session 2 (Low engagement, views 1-12). All high-engagement clips share the exact same room, lighting, instructor, and student cohort at the same time. Cross-validation across views inside the same session evaluates multi-camera angle consistency, NOT unseen-classroom generalization.",
+    "individual_ground_truth_status": "ABSENT (Ecological Fallacy Risk)",
+    "individual_ground_truth_note": "OUC-CGE provides ZERO individual student ground-truth attention annotations. Mapping group engagement (High/Low) to individual student tracks (1 to 6,298) is scientifically invalid."
+  },
+  "duration_sec": 0.75
+}

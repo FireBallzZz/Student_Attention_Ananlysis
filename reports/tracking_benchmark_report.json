@@ -1,0 +1,79 @@
+{
+  "timestamp": 1793113965.180443,
+  "hardware": "NVIDIA GeForce RTX 3060",
+  "detector": "YOLO11-Pose (yolo11n-pose.pt)",
+  "selected_tracker_recommendation": "deepsort",
+  "selection_rationale": "ByteTrack achieved 27.8 FPS (vs DeepSORT 73.8 FPS) with continuity ratio 0.575 (vs 0.695).",
+  "benchmark_results": [
+    {
+      "clip": "view1.mp4",
+      "tracker": "bytetrack",
+      "processed_frames": 150,
+      "elapsed_sec": 5.4,
+      "fps": 27.8,
+      "total_detections": 867,
+      "avg_students_per_frame": 5.78,
+      "unique_track_ids": 10,
+      "avg_track_duration_frames": 86.3,
+      "continuity_ratio": 0.575,
+      "modality_breakdown": {
+        "head_pose_valid": 199,
+        "posture_valid": 785,
+        "distant": 82,
+        "face_detected": 210
+      },
+      "gpu_peak_vram_mb": 89.2
+    },
+    {
+      "clip": "view1.mp4",
+      "tracker": "deepsort",
+      "processed_frames": 150,
+      "elapsed_sec": 2.03,
+      "fps": 73.8,
+      "total_detections": 867,
+      "avg_students_per_frame": 5.78,
+      "unique_track_ids": 9,
+      "avg_track_duration_frames": 104.2,
+      "continuity_ratio": 0.695,
+      "modality_breakdown": {
+        "head_pose_valid": 202,
+        "posture_valid": 781,
+        "distant": 254,
+        "face_detected": 213
+      },
+      "gpu_peak_vram_mb": 89.2
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion": "CRITERIA-1: Detection Coverage (>=90% frames contain students)",
+      "status": "PASS",
+      "measured": "5.78 students/frame"
+    },
+    {
+      "criterion": "CRITERIA-2: Track Continuity (>=50% continuity ratio)",
+      "status": "PASS",
+      "measured": "57.5%"
+    },
+    {
+      "criterion": "CRITERIA-3: Modality Extraction (pose & posture reliability gating)",
+      "status": "PASS",
+      "measured": "{'head_pose_valid': 199, 'posture_valid': 785, 'distant': 82, 'face_detected': 210}"
+    },
+    {
+      "criterion": "CRITERIA-4: Processing Throughput (>=15.0 FPS on GPU)",
+      "status": "PASS",
+      "measured": "27.8 FPS"
+    },
+    {
+      "criterion": "CRITERIA-5: Diagnostic Video Generation (rendered & readable)",
+      "status": "PASS",
+      "measured": "7725699 bytes"
+    },
+    {
+      "criterion": "CRITERIA-6: MOT Precision/Recall Ground-Truth",
+      "status": "NOT VERIFIED",
+      "measured": "No MOT ground-truth annotation files supplied in OUC-CGE archive"
+    }
+  ]
+}

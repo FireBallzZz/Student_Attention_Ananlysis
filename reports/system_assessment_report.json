@@ -1,0 +1,36 @@
+{
+  "session_id": "verification_session_view1",
+  "session_summary": {
+    "session_id": "verification_session_view1",
+    "total_duration_sec": 5.9,
+    "total_students_tracked": 6,
+    "mean_attention_score": 92.0,
+    "attentive_ratio": 98.1,
+    "inattentive_ratio": 1.6,
+    "moderate_ratio": 0.3,
+    "total_drop_events": 1
+  },
+  "drop_events": [
+    {
+      "event_id": "DROP-T03-001",
+      "track_id": 3,
+      "timestamp_sec": 7.56,
+      "drop_magnitude": 28.0,
+      "evidence": "Sustained attention score decline from baseline 79.5 to 51.5 (-28.0 pts) over 2.0s. Observable markers: head pitched downward (-21.4 deg), slumped body posture (65.4 deg), low motor activity (energy: 1.3).",
+      "confidence": 0.48
+    }
+  ],
+  "interventions": [
+    {
+      "event_id": "DROP-T03-001",
+      "target_track_id": 3,
+      "timestamp_sec": 7.56,
+      "urgency_level": "HIGH",
+      "explanation": "Student ID #3 experienced a sustained score decline from 79.5 to 28.0 (-28.0 pts) over 2.0s, driven by persistent downward head orientation and upper-body slouching.",
+      "teaching_recommendation": "Evaluate lesson pacing and cognitive load. The physical slump may indicate cognitive fatigue or lecture fatigue.",
+      "intervention_suggestion": "Transition from monologue to a 2-minute 'Think-Pair-Share' active learning exercise, or introduce a 60-second physical stretch break to re-energize the room.",
+      "caution_disclaimer": "CAUTION: Analysis is grounded in observable physical markers (head pose, gaze proxy, torso posture, and motion). It does not directly measure internal cognitive comprehension. A student looking down may be writing notes or studying quietly."
+    }
+  ],
+  "ethical_safeguard": "Observable attention metrics reflect visual and postural signals only. They must not be conflated with cognitive learning outcomes without independent assessment data."
+}

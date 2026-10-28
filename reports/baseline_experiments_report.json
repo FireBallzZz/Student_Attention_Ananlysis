@@ -1,0 +1,169 @@
+{
+  "timestamp": 1793114071.1145735,
+  "total_observations": 6298,
+  "train_samples": 4777,
+  "val_samples": 1521,
+  "train_class_distribution": {
+    "0": 973,
+    "1": 3804
+  },
+  "val_class_distribution": {
+    "0": 355,
+    "1": 1166
+  },
+  "split_strategy": "Independent video clips (view11, view12, view3 held out). Zero temporal frame leakage.",
+  "best_model": "Gradient Boosting (GBDT)",
+  "best_macro_f1": 0.9748137108792847,
+  "feature_schema": [
+    "head_pitch_deg",
+    "head_yaw_deg",
+    "head_roll_deg",
+    "head_pose_confidence",
+    "gaze_horizontal",
+    "gaze_vertical",
+    "torso_angle_deg",
+    "shoulder_tilt_deg",
+    "movement_energy",
+    "bbox_area_ratio",
+    "detection_confidence",
+    "missing_face",
+    "missing_head_pose",
+    "missing_gaze",
+    "missing_torso",
+    "is_distant"
+  ],
+  "model_results": [
+    {
+      "model_name": "Majority Class Baseline",
+      "accuracy": 0.7666,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.4339,
+      "precision_class_0": 0.0,
+      "recall_class_0": 0.0,
+      "precision_class_1": 0.7666,
+      "recall_class_1": 1.0,
+      "confusion_matrix": [
+        [
+          0,
+          355
+        ],
+        [
+          0,
+          1166
+        ]
+      ],
+      "brier_score": 0.2334,
+      "latency_ms_per_sample": 0.0002
+    },
+    {
+      "model_name": "Logistic Regression (L2)",
+      "accuracy": 0.8041,
+      "balanced_accuracy": 0.7684,
+      "macro_f1": 0.7465,
+      "precision_class_0": 0.5646,
+      "recall_class_0": 0.7014,
+      "precision_class_1": 0.9019,
+      "recall_class_1": 0.8353,
+      "confusion_matrix": [
+        [
+          249,
+          106
+        ],
+        [
+          192,
+          974
+        ]
+      ],
+      "brier_score": 0.1615,
+      "latency_ms_per_sample": 0.0003
+    },
+    {
+      "model_name": "Random Forest",
+      "accuracy": 0.9553,
+      "balanced_accuracy": 0.9503,
+      "macro_f1": 0.9391,
+      "precision_class_0": 0.8766,
+      "recall_class_0": 0.9408,
+      "precision_class_1": 0.9816,
+      "recall_class_1": 0.9597,
+      "confusion_matrix": [
+        [
+          334,
+          21
+        ],
+        [
+          47,
+          1119
+        ]
+      ],
+      "brier_score": 0.0467,
+      "latency_ms_per_sample": 0.019
+    },
+    {
+      "model_name": "Gradient Boosting (GBDT)",
+      "accuracy": 0.9816,
+      "balanced_accuracy": 0.9851,
+      "macro_f1": 0.9748,
+      "precision_class_0": 0.9337,
+      "recall_class_0": 0.9915,
+      "precision_class_1": 0.9974,
+      "recall_class_1": 0.9786,
+      "confusion_matrix": [
+        [
+          352,
+          3
+        ],
+        [
+          25,
+          1141
+        ]
+      ],
+      "brier_score": 0.0148,
+      "latency_ms_per_sample": 0.0019
+    },
+    {
+      "model_name": "Compact MLP Neural Baseline",
+      "accuracy": 0.9579,
+      "balanced_accuracy": 0.9598,
+      "macro_f1": 0.9433,
+      "precision_class_0": 0.8702,
+      "recall_class_0": 0.9634,
+      "precision_class_1": 0.9885,
+      "recall_class_1": 0.9563,
+      "confusion_matrix": [
+        [
+          342,
+          13
+        ],
+        [
+          51,
+          1115
+        ]
+      ],
+      "brier_score": 0.0316,
+      "latency_ms_per_sample": 0.0002
+    },
+    {
+      "model_name": "Temporal BiGRU (seq_len=5)",
+      "accuracy": 0.9967,
+      "balanced_accuracy": 0.9979,
+      "macro_f1": 0.9954,
+      "precision_class_0": 0.9861,
+      "recall_class_0": 1.0,
+      "precision_class_1": 1.0,
+      "recall_class_1": 0.9957,
+      "confusion_matrix": [
+        [
+          71,
+          0
+        ],
+        [
+          1,
+          232
+        ]
+      ],
+      "brier_score": 0.0028,
+      "latency_ms_per_sample": 0.064
+    }
+  ]
+}

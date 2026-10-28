@@ -1,0 +1,6 @@
+path: C:/Users/User/Downloads/Model v2/classroom_attention_research/experiments/dataset_pilot_001/data/scb_pilot
+train: images/train
+val: images/val
+
+nc: 3
+names: ['hand-raising', 'read', 'write']

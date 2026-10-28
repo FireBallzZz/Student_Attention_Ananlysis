@@ -1,0 +1,273 @@
+{
+  "experiment_id": "dataset_pilot_001",
+  "timestamp": "2026-10-27T22:54:00Z",
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "vram_gb": 12.0,
+    "cpu_arch": "AMD64 (x86_64)",
+    "os": "Windows 11"
+  },
+  "files_downloaded": [
+    {
+      "filename": "attention_detection_dataset_v3.csv",
+      "dataset": "Mendeley Students Attention Detection Dataset v3",
+      "source_url": "https://data.mendeley.com/datasets/smzggbnkd2/3",
+      "size_bytes": 1609237,
+      "size_mb": 1.53,
+      "md5": "1280c448eed54e264faf123e6add2e15",
+      "sha256": "b577cb262d35f8b4b31db3bcb4132e82ed09aca0514f430178f3d3959154e685",
+      "license": "CC BY 4.0"
+    },
+    {
+      "filename": "scb_pilot (100 image-label pairs)",
+      "dataset": "SCB-Dataset (SCB5 Handrise-Read-Write)",
+      "source_url": "https://huggingface.co/datasets/wintonYF/SCB-Dataset",
+      "size_bytes": 13421772,
+      "size_mb": 12.8,
+      "total_images": 100,
+      "license": "Non-commercial Academic Research"
+    }
+  ],
+  "experiments": {
+    "experiment_a_tabular": {
+      "category": "A. Individual attention classification from pre-extracted features",
+      "result_type": "Proper validation result (Stratified Split)",
+      "metrics": {
+        "experiment": "Experiment A: Tabular Attention Classification",
+        "dataset": "Mendeley Students Attention Detection Dataset v3",
+        "dataset_doi": "10.17632/smzggbnkd2.3",
+        "pilot_sample_size": 1500,
+        "train_samples": 1050,
+        "test_samples": 450,
+        "best_model": "RandomForest",
+        "models_evaluated": {
+          "DummyClassifier": {
+            "accuracy": 0.52,
+            "balanced_accuracy": 0.5,
+            "macro_f1": 0.3421,
+            "class_0_attentive": {
+              "precision": 0.52,
+              "recall": 1.0,
+              "f1": 0.6842
+            },
+            "class_1_inattentive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "confusion_matrix": [
+              [
+                234,
+                0
+              ],
+              [
+                216,
+                0
+              ]
+            ],
+            "train_duration_sec": 0.0115,
+            "inference_duration_sec": 0.0046
+          },
+          "LogisticRegression": {
+            "accuracy": 0.9244,
+            "balanced_accuracy": 0.9234,
+            "macro_f1": 0.9242,
+            "class_0_attentive": {
+              "precision": 0.9098,
+              "recall": 0.9487,
+              "f1": 0.9289
+            },
+            "class_1_inattentive": {
+              "precision": 0.9417,
+              "recall": 0.8981,
+              "f1": 0.9194
+            },
+            "confusion_matrix": [
+              [
+                222,
+                12
+              ],
+              [
+                22,
+                194
+              ]
+            ],
+            "train_duration_sec": 0.0198,
+            "inference_duration_sec": 0.0044
+          },
+          "RandomForest": {
+            "accuracy": 0.9267,
+            "balanced_accuracy": 0.9259,
+            "macro_f1": 0.9264,
+            "class_0_attentive": {
+              "precision": 0.917,
+              "recall": 0.9444,
+              "f1": 0.9305
+            },
+            "class_1_inattentive": {
+              "precision": 0.9378,
+              "recall": 0.9074,
+              "f1": 0.9224
+            },
+            "confusion_matrix": [
+              [
+                221,
+                13
+              ],
+              [
+                20,
+                196
+              ]
+            ],
+            "train_duration_sec": 0.1039,
+            "inference_duration_sec": 0.0203
+          },
+          "HistGradientBoosting": {
+            "accuracy": 0.92,
+            "balanced_accuracy": 0.9192,
+            "macro_f1": 0.9197,
+            "class_0_attentive": {
+              "precision": 0.9091,
+              "recall": 0.9402,
+              "f1": 0.9244
+            },
+            "class_1_inattentive": {
+              "precision": 0.9327,
+              "recall": 0.8981,
+              "f1": 0.9151
+            },
+            "confusion_matrix": [
+              [
+                220,
+                14
+              ],
+              [
+                22,
+                194
+              ]
+            ],
+            "train_duration_sec": 1.6711,
+            "inference_duration_sec": 0.0059
+          }
+        },
+        "total_experiment_duration_sec": 7.15
+      }
+    },
+    "experiment_b_scb": {
+      "category": "B. Student action detection from images",
+      "result_type": "Pipeline smoke test (Small Pilot)",
+      "metrics": {
+        "experiment": "Experiment B: Classroom Behavior Detection",
+        "dataset": "SCB-Dataset (SCB5 Handrise-Read-Write Pilot)",
+        "dataset_url": "https://github.com/Whiffe/SCB-dataset",
+        "result_type": "Pipeline Smoke Test (Small Pilot)",
+        "train_images": 70,
+        "val_images": 30,
+        "class_instance_counts": {
+          "hand-raising": 345,
+          "read": 314,
+          "write": 184
+        },
+        "model_architecture": "YOLO11n (Ultralytics 8.4.182)",
+        "epochs_trained": 5,
+        "overall_metrics": {
+          "precision": 0.0642,
+          "recall": 0.2328,
+          "mAP_50": 0.0368,
+          "mAP_50_95": 0.0169
+        },
+        "per_class_metrics": {
+          "hand-raising": {
+            "precision": 0.0982,
+            "recall": 0.0079,
+            "map50": 0.0279,
+            "map": 0.0099
+          },
+          "read": {
+            "precision": 0.0621,
+            "recall": 0.3571,
+            "map50": 0.0523,
+            "map": 0.0185
+          },
+          "write": {
+            "precision": 0.0322,
+            "recall": 0.3333,
+            "map50": 0.0301,
+            "map": 0.0223
+          }
+        },
+        "timing_and_hardware": {
+          "train_duration_sec": 39.8,
+          "val_duration_sec": 3.84,
+          "peak_gpu_memory_mb": 1146.48,
+          "device": "NVIDIA GeForce RTX 3060"
+        },
+        "scientific_disclaimer": "Physical actions (hand-raising, reading, writing) do NOT constitute definitive attention/inattention ground truth. Hand-raising is an active participatory action; reading/writing are learning tasks. This pilot benchmarks action detection capabilities, not cognitive mental states."
+      }
+    },
+    "experiment_c_ouc_cge": {
+      "category": "C. Group-level engagement classification",
+      "result_type": "Small pilot result (Multi-View Synchronized)",
+      "metrics": {
+        "experiment": "Experiment C: Existing OUC-CGE Pilot Audit",
+        "dataset": "OUC-CGE (Ocean University of China Classroom Group Engagement)",
+        "dataset_doi": "10.17605/OSF.IO/BRD2C",
+        "license": "CC BY 4.0",
+        "total_clips_present": 24,
+        "valid_dynamic_clips_evaluated": 21,
+        "excluded_frozen_clips": [
+          "low/view7.mp4",
+          "low/view8.mp4"
+        ],
+        "excluded_duplicate_clips": [
+          "low/view2.mp4 (byte identical to low/view1.mp4)"
+        ],
+        "task": "Group-Level Engagement Classification (Clip Aggregation)",
+        "models": {
+          "LogisticRegression_LOO": {
+            "accuracy": 0.9524,
+            "balanced_accuracy": 0.9583,
+            "macro_f1": 0.9519,
+            "confusion_matrix": [
+              [
+                9,
+                0
+              ],
+              [
+                1,
+                11
+              ]
+            ]
+          },
+          "RandomForest_LOO": {
+            "accuracy": 1.0,
+            "balanced_accuracy": 1.0,
+            "macro_f1": 1.0,
+            "confusion_matrix": [
+              [
+                9,
+                0
+              ],
+              [
+                0,
+                12
+              ]
+            ]
+          }
+        },
+        "session_leakage_audit": {
+          "finding": "SEVERE MULTI-VIEW SYNCHRONIZATION LEAKAGE",
+          "description": "The 21 dynamic clips stem from only TWO physical classroom recordings: Session 1 (High engagement, views 1-12) and Session 2 (Low engagement, views 1-12). All high-engagement clips share the exact same room, lighting, instructor, and student cohort at the same time. Cross-validation across views inside the same session evaluates multi-camera angle consistency, NOT unseen-classroom generalization.",
+          "individual_ground_truth_status": "ABSENT (Ecological Fallacy Risk)",
+          "individual_ground_truth_note": "OUC-CGE provides ZERO individual student ground-truth attention annotations. Mapping group engagement (High/Low) to individual student tracks (1 to 6,298) is scientifically invalid."
+        },
+        "duration_sec": 0.75
+      }
+    },
+    "category_d_classroom_video_individual": {
+      "category": "D. Individual attention classification from classroom video",
+      "result_type": "BLOCKED / NO OFF-THE-SHELF BENCHMARK",
+      "status": "No public dataset provides continuous multi-student classroom video with verified individual attention ground truth. Requires thesis annotation protocol execution."
+    }
+  }
+}

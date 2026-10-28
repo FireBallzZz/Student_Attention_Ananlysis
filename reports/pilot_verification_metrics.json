@@ -1,0 +1,144 @@
+{
+  "report_verification": {
+    "saved_metrics_file": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\honest_pilot_metrics.json",
+    "confusion_matrix": [
+      [
+        9,
+        0
+      ],
+      [
+        1,
+        11
+      ]
+    ],
+    "confusion_matrix_sum": 21,
+    "accuracy_matches": true,
+    "balanced_accuracy_matches": true,
+    "macro_f1_matches": true,
+    "per_class_recall_matches": true,
+    "mathematical_consistency_status": "PASS"
+  },
+  "preprocessing_hygiene": {
+    "scaler_fitted_on_train_only": true,
+    "feature_selection_leakage": false,
+    "threshold_leakage": false,
+    "status": "PASS"
+  },
+  "multi_view_leakage_audit": {
+    "stratified_cv_leakage_risk": "HIGH VULNERABILITY: Synchronized multi-camera views of the same classroom session appear in both training and validation folds. Stratified K-Fold CV measures multi-view viewpoint invariance, NOT cross-session generalization.",
+    "status": "CAUTION_ACKNOWLEDGED"
+  },
+  "session_grouped_evaluation": {
+    "session_count": 2,
+    "sessions": [
+      "Session_High",
+      "Session_Low"
+    ],
+    "feasible": false,
+    "status": "NOT VERIFIABLE",
+    "reason": "NOT VERIFIABLE: insufficient independent sessions. The pilot dataset contains only 2 physical sessions ('Session_High' with 12 multi-view clips and 'Session_Low' with 9 multi-view clips). If Session_High is held out for testing, the training set contains solely Class 0 (Low), preventing any binary supervised training. Cross-session generalization cannot be mathematically evaluated on this pilot."
+  },
+  "fold_level_breakdown": [
+    {
+      "fold": 1,
+      "train_samples": 16,
+      "val_samples": 5,
+      "val_class_counts": {
+        "0": 2,
+        "1": 3
+      },
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "val_clip_ids": [
+        "view11",
+        "view3",
+        "view4",
+        "view1",
+        "view12"
+      ]
+    },
+    {
+      "fold": 2,
+      "train_samples": 17,
+      "val_samples": 4,
+      "val_class_counts": {
+        "0": 1,
+        "1": 3
+      },
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "val_clip_ids": [
+        "view2",
+        "view6",
+        "view8",
+        "view5"
+      ]
+    },
+    {
+      "fold": 3,
+      "train_samples": 17,
+      "val_samples": 4,
+      "val_class_counts": {
+        "0": 2,
+        "1": 2
+      },
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "val_clip_ids": [
+        "view7",
+        "view9",
+        "view11",
+        "view3"
+      ]
+    },
+    {
+      "fold": 4,
+      "train_samples": 17,
+      "val_samples": 4,
+      "val_class_counts": {
+        "0": 2,
+        "1": 2
+      },
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "val_clip_ids": [
+        "view10",
+        "view12",
+        "view10",
+        "view4"
+      ]
+    },
+    {
+      "fold": 5,
+      "train_samples": 17,
+      "val_samples": 4,
+      "val_class_counts": {
+        "0": 2,
+        "1": 2
+      },
+      "accuracy": 0.75,
+      "macro_f1": 0.7333,
+      "val_clip_ids": [
+        "view1",
+        "view5",
+        "view6",
+        "view9"
+      ]
+    }
+  ],
+  "reproduced_overall": {
+    "accuracy": 0.9524,
+    "balanced_accuracy": 0.9583,
+    "macro_f1": 0.9519,
+    "confusion_matrix": [
+      [
+        9,
+        0
+      ],
+      [
+        1,
+        11
+      ]
+    ]
+  }
+}

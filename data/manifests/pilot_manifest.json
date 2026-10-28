@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "dataset_name": "OUC-CGE (Ocean University of China Classroom Group Engagement Dataset)",
+    "official_doi": "10.17605/OSF.IO/BRD2C",
+    "publication": "A Video Dataset for Classroom Group Engagement Recognition (Scientific Data, Nature, 2024)",
+    "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+    "source_platform": "Open Science Framework (OSF)",
+    "camera_specifications": "Fixed Logitech C922 Pro webcams, 1280x720, 30 FPS",
+    "annotation_type": "Ordinal 3-level clip engagement (High, Medium, Low)",
+    "pilot_purpose": "Stage 1-5 multi-student tracking, pose estimation, feature extraction, and attention drop benchmarking"
+  },
+  "download_timestamp": "2026-10-27T15:05:57.566661Z",
+  "total_archives": 2,
+  "total_download_size_bytes": 41851329,
+  "total_video_clips": 24,
+  "clips": [
+    {
+      "relative_path": "data/pilot/low_engagement/low/view12.mp4",
+      "filename": "view12.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 741192,
+      "md5": "359a85d94b02273e10e5cc806e44b770",
+      "sha256": "686d9e273e887dfb7d1cbb1e7ce2f37887d354f751641894a05cc92b699ac18c"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view1.mp4",
+      "filename": "view1.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 655516,
+      "md5": "07cac49efbcdbd45e2d2bb905ff22eeb",
+      "sha256": "b69c177796a2e62e3c3dbd99a0c07d6cd79a6257e7e2e331be7bb2afeed8edf7"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view2.mp4",
+      "filename": "view2.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 655516,
+      "md5": "07cac49efbcdbd45e2d2bb905ff22eeb",
+      "sha256": "b69c177796a2e62e3c3dbd99a0c07d6cd79a6257e7e2e331be7bb2afeed8edf7"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view3.mp4",
+      "filename": "view3.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 851344,
+      "md5": "e15d4d3b9f41080279cfab458e888de1",
+      "sha256": "14e4e3fd383df03ac22e5173382dc72ca0983a16eeadc6b77d8b7b01a5bd9b6f"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view4.mp4",
+      "filename": "view4.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 851141,
+      "md5": "226996b26e7fd48941db4e877e35e0f7",
+      "sha256": "825204a84c927ff6eab3478a133fcecd05525c97fb0bd065765582798b8eb481"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view5.mp4",
+      "filename": "view5.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 707644,
+      "md5": "b410aa20c2c479bfc8138754b1de637c",
+      "sha256": "6c7acc50b41cfefdb340c2522ecbeb874775aaac7de50e583609f06f7b097ae4"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view6.mp4",
+      "filename": "view6.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 707423,
+      "md5": "e65082b6bfa5b4c3d908eeae691bdca7",
+      "sha256": "20a40a869b9dcfd37efcc8120d20973c4c7e4e3c7e58038a48d110f48eeeeeb6"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view7.mp4",
+      "filename": "view7.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 513619,
+      "md5": "49d34608f29726f2be603d67ddda9593",
+      "sha256": "d01a90480e3ae1a917c6acdc3f1c048e1b819af53ff6cdaeba08953deb2ae4fc"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view8.mp4",
+      "filename": "view8.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 513019,
+      "md5": "34fb37767a5b35a051cf5bce85d19ce7",
+      "sha256": "baea5ab9040cc9039059562ee47abb10b98a5f8116a0dba81356ea84e66fa311"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view9.mp4",
+      "filename": "view9.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 594423,
+      "md5": "e3d34d00ffdac1c1ea0eacfe6b3b7971",
+      "sha256": "662c442312392a6b6e5493f4f7af2a400331ffc743e960cf00cf982a9f014793"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view10.mp4",
+      "filename": "view10.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 594423,
+      "md5": "dd630e8c63debb0f24e97de5f446f3a6",
+      "sha256": "95aab229514aef3d71397c4533aba1845bea99031122510cf48e5a3bb6a257fd"
+    },
+    {
+      "relative_path": "data/pilot/low_engagement/low/view11.mp4",
+      "filename": "view11.mp4",
+      "archive_source": "low_sample.zip",
+      "group_engagement_label": "low_engagement",
+      "engagement_ordinal": 0,
+      "file_size_bytes": 654840,
+      "md5": "f7a8fa7c03c2195f50879e1a5c9ff22e",
+      "sha256": "349ad4d7de19373c936ce38f7702d716f3daabfd4d386f82debc386f2412198a"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view12.mp4",
+      "filename": "view12.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3418702,
+      "md5": "bf41314a911a5b7a34a8686710e824c1",
+      "sha256": "06eccf817095c1cbfa0cb3508e2e826d25a741fd26800a167cd60d74e2a36590"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view1.mp4",
+      "filename": "view1.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2348544,
+      "md5": "1a07b732bfbb72a3fca3eead3304910c",
+      "sha256": "ab6d972f254c1313bc8eabc87fc61192749392b96d624b0d110d10646dc797ab"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view2.mp4",
+      "filename": "view2.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3525395,
+      "md5": "62d022efc77e408472077c736c35b6cd",
+      "sha256": "afb64c80a439c682c63d054b1ec838adc4477614aeb27caa59e902e93019ca9c"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view3.mp4",
+      "filename": "view3.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2259361,
+      "md5": "60d3127d15b09f0501c4175c40f97c35",
+      "sha256": "f8c6454f738062cabd1b811807044f5d82996be925cb27866b5c521756d017eb"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view4.mp4",
+      "filename": "view4.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3382227,
+      "md5": "8daf1a914c93969c06bb10d41343ccdb",
+      "sha256": "adb67d2295762506cb7a5971d0986178ba9d13fc5c231cece0081f32c22e68f7"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view5.mp4",
+      "filename": "view5.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2285794,
+      "md5": "2e7de74f3f6a96ebb854d99a22bc84fc",
+      "sha256": "1477f25ef997c2e207bdb9d00d9544636a5ef569afe9df84a7a67fe0816de879"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view6.mp4",
+      "filename": "view6.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3393057,
+      "md5": "6ebdc00e536c33b070d8dadac5298712",
+      "sha256": "be7150c4c9d1efeb3ee27cb51124104e4e72068364a31ce3b27b1926e152e5d3"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view7.mp4",
+      "filename": "view7.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2211956,
+      "md5": "a3f164d49394c70546b158f3e682f2b7",
+      "sha256": "8d8339340cabc924a0303c834eedcd9f8004f2d983313afeb2d1914497b7f256"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view8.mp4",
+      "filename": "view8.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3310941,
+      "md5": "01b7212d026ee1de711712d8b19aac5e",
+      "sha256": "b0b877c09a598ef7da9f0899b916e4ef670d69a48f42a9d4780900c7c9d18b24"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view9.mp4",
+      "filename": "view9.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2236267,
+      "md5": "4ec82944072ce399b0bafe298bf2a367",
+      "sha256": "66337d7775fac954a2b0c760108b72afc2937f21a39a93dac202e6d614fd5b42"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view10.mp4",
+      "filename": "view10.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 3386030,
+      "md5": "88bdbe5c803a8615153db80654e9dc44",
+      "sha256": "27c0f9fe0479eca4bafaedbb16ba33bed298c0bb0839c4f928711f0f48affdf4"
+    },
+    {
+      "relative_path": "data/pilot/high_engagement/high/view11.mp4",
+      "filename": "view11.mp4",
+      "archive_source": "high_sample.zip",
+      "group_engagement_label": "high_engagement",
+      "engagement_ordinal": 2,
+      "file_size_bytes": 2302470,
+      "md5": "88262a87f2c87b6badecf02a337e875f",
+      "sha256": "c4bea8e5ba9aa8509bd48a9196781d9ba9f4e48cfe5d296aa28d0d03d6674c11"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "experiment": "Experiment A: Tabular Attention Classification",
+  "dataset": "Mendeley Students Attention Detection Dataset v3",
+  "dataset_doi": "10.17632/smzggbnkd2.3",
+  "pilot_sample_size": 1500,
+  "train_samples": 1050,
+  "test_samples": 450,
+  "best_model": "RandomForest",
+  "models_evaluated": {
+    "DummyClassifier": {
+      "accuracy": 0.52,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.3421,
+      "class_0_attentive": {
+        "precision": 0.52,
+        "recall": 1.0,
+        "f1": 0.6842
+      },
+      "class_1_inattentive": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "confusion_matrix": [
+        [
+          234,
+          0
+        ],
+        [
+          216,
+          0
+        ]
+      ],
+      "train_duration_sec": 0.0115,
+      "inference_duration_sec": 0.0046
+    },
+    "LogisticRegression": {
+      "accuracy": 0.9244,
+      "balanced_accuracy": 0.9234,
+      "macro_f1": 0.9242,
+      "class_0_attentive": {
+        "precision": 0.9098,
+        "recall": 0.9487,
+        "f1": 0.9289
+      },
+      "class_1_inattentive": {
+        "precision": 0.9417,
+        "recall": 0.8981,
+        "f1": 0.9194
+      },
+      "confusion_matrix": [
+        [
+          222,
+          12
+        ],
+        [
+          22,
+          194
+        ]
+      ],
+      "train_duration_sec": 0.0198,
+      "inference_duration_sec": 0.0044
+    },
+    "RandomForest": {
+      "accuracy": 0.9267,
+      "balanced_accuracy": 0.9259,
+      "macro_f1": 0.9264,
+      "class_0_attentive": {
+        "precision": 0.917,
+        "recall": 0.9444,
+        "f1": 0.9305
+      },
+      "class_1_inattentive": {
+        "precision": 0.9378,
+        "recall": 0.9074,
+        "f1": 0.9224
+      },
+      "confusion_matrix": [
+        [
+          221,
+          13
+        ],
+        [
+          20,
+          196
+        ]
+      ],
+      "train_duration_sec": 0.1039,
+      "inference_duration_sec": 0.0203
+    },
+    "HistGradientBoosting": {
+      "accuracy": 0.92,
+      "balanced_accuracy": 0.9192,
+      "macro_f1": 0.9197,
+      "class_0_attentive": {
+        "precision": 0.9091,
+        "recall": 0.9402,
+        "f1": 0.9244
+      },
+      "class_1_inattentive": {
+        "precision": 0.9327,
+        "recall": 0.8981,
+        "f1": 0.9151
+      },
+      "confusion_matrix": [
+        [
+          220,
+          14
+        ],
+        [
+          22,
+          194
+        ]
+      ],
+      "train_duration_sec": 1.6711,
+      "inference_duration_sec": 0.0059
+    }
+  },
+  "total_experiment_duration_sec": 7.15
+}

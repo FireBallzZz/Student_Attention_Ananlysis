@@ -1,0 +1,46 @@
+================================================================================
+EXPERIMENT ENVIRONMENT SPECIFICATION & SYSTEM AUDIT
+Repository: classroom_attention_research
+Run Directory: experiments/dataset_pilot_001/
+Timestamp: 2026-10-27T22:50:00Z
+================================================================================
+
+1. OPERATING SYSTEM & ARCHITECTURE
+--------------------------------------------------------------------------------
+OS Platform:            Windows 11 Professional (Build 10.0.26200-SP0)
+System Architecture:    AMD64 (x86_64)
+Python Interpreter:     Python 3.14.4 (tags/v3.14.4:23116f9, Apr  7 2026)
+Compiler:               MSC v.1944 64 bit
+
+2. COMPUTE HARDWARE & ACCELERATION
+--------------------------------------------------------------------------------
+GPU Model:              NVIDIA GeForce RTX 3060
+GPU Memory (VRAM):      12.00 GB GDDR6
+CUDA Capability:        8.6 (Ampere Architecture)
+CUDA Runtime Available: True (PyTorch cu126)
+Peak Training Memory:   < 2.50 GB allocated during YOLO11n fine-tuning
+Disk Total:             930.40 GB
+Disk Free Available:    398.86 GB (Healthy headroom)
+
+3. KEY MACHINE LEARNING & COMPUTER VISION LIBRARIES
+--------------------------------------------------------------------------------
+torch:                  2.14.1+cu126
+torchvision:            0.29.1+cu126
+ultralytics:            8.4.182 (YOLO11 engine)
+scikit-learn:           1.8.0
+scipy:                  1.17.1
+numpy:                  2.4.4
+pandas:                 3.0.2
+opencv-python (cv2):    5.0.0
+matplotlib:             3.10.8
+seaborn:                0.13.2
+pillow (PIL):           12.3.0
+pyyaml:                 6.0.3
+requests:               2.26.0
+
+4. REPRODUCIBILITY CONTROLS
+--------------------------------------------------------------------------------
+Global Random Seed:     42 (np.random.seed(42), random_state=42)
+Data Partitions:        Deterministic Stratified Splits
+Model Serialization:    Joblib (Tabular), PyTorch .pt (YOLO)
+Artifacts Directory:    experiments/dataset_pilot_001/

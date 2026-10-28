@@ -1,0 +1,49 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Data & Large Raw Archives
+data/raw/
+data/pilot/
+data/processed/
+
+# Checkpoints (Exclude generic checkpoints, but preserve production models)
+checkpoints/*.pt
+checkpoints/*.pth
+checkpoints/*.onnx
+checkpoints/*.joblib
+!checkpoints/final_attention_model.joblib
+!checkpoints/best_baseline_model.joblib
+!checkpoints/feature_scaler.joblib
+!checkpoints/yolo11n-pose.pt
+
+# Experiments, Runs & Weights
+runs/
+experiments/runs/
+reports/figures/
+weights/
+yolo11n.pt
+*.log
+
+# Web App transient outputs and uploads
+web_app/static/uploads/*
+!web_app/static/uploads/.gitkeep
+web_app/static/outputs/output_job_*
+web_app/static/outputs/analysis_job_*
+
+# Scratch temporary dumps
+scratch/__pycache__/
+scratch/*.mp4
+scratch/*.webm
+scratch/*.csv
+scratch/*.jpg
+
+# Environment & IDE
+.env
+.venv/
+venv/
+.idea/
+.vscode/

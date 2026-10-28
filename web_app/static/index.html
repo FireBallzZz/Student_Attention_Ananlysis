@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Classroom Attention Analytics | CSE Thesis Pipeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="logo-badge">🎓</div>
+        <div>
+          <h1 class="brand-title">Smart Classroom Attention Analytics</h1>
+          <p class="brand-subtitle">Hybrid Computer Vision & LLM Framework for Student Attention & Pedagogical Guidance</p>
+        </div>
+      </div>
+      <div class="pipeline-pills">
+        <div class="pill"><span class="pill-dot"></span> YOLO11-Pose (1280p High-Res)</div>
+        <div class="pill"><span class="pill-dot"></span> Student Census Count</div>
+        <div class="pill"><span class="pill-dot"></span> Previous Frame Reference</div>
+        <div class="pill"><span class="pill-dot"></span> Anti-Duplicacy IoU Suppression</div>
+        <div class="pill"><span class="pill-dot"></span> Out-of-Camera Exit Handling</div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <div class="grid-2col">
+
+      <!-- Left Column: Input & Controls -->
+      <aside class="controls-column">
+        <div class="glass-card">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Select Classroom Video
+          </div>
+
+          <!-- Input Selection Tabs -->
+          <div class="input-tabs">
+            <button class="tab-btn active" id="tab-samples-btn" onclick="switchInputTab('samples')">Pre-Loaded Pilot Clips</button>
+            <button class="tab-btn" id="tab-upload-btn" onclick="switchInputTab('upload')">Upload Custom Video</button>
+          </div>
+
+          <!-- Sample Videos Panel -->
+          <div id="panel-samples">
+            <div class="sample-list" id="sample-list-container">
+              <!-- Dynamically populated sample cards -->
+              <div class="sample-card selected" onclick="selectSample('high_view1', this)">
+                <div class="sample-card-head">
+                  <span class="sample-card-title">Front-Center Perspective (High Engagement)</span>
+                  <span class="sample-card-tag">View 1</span>
+                </div>
+                <p class="sample-card-desc">Front-row focus, high illumination, clear eye gaze & facial orientation (6–8 visible students).</p>
+              </div>
+
+              <div class="sample-card" onclick="selectSample('low_view3', this)">
+                <div class="sample-card-head">
+                  <span class="sample-card-title">Side-Angle Oblique (Low Engagement)</span>
+                  <span class="sample-card-tag">View 3</span>
+                </div>
+                <p class="sample-card-desc">Side-wall 45° angle, desk occlusions, natural student slumping & disengagement (8–12 students).</p>
+              </div>
+
+              <div class="sample-card" onclick="selectSample('high_view11', this)">
+                <div class="sample-card-head">
+                  <span class="sample-card-title">Rear High-Angle (Distance Gating)</span>
+                  <span class="sample-card-tag">View 11</span>
+                </div>
+                <p class="sample-card-desc">Elevated rear perspective, distant rows (&lt;24px faces), heavy occlusion gating benchmark.</p>
+              </div>
+
+              <div class="sample-card" onclick="selectSample('clip_4', this)">
+                <div class="sample-card-head">
+                  <span class="sample-card-title">Clip 4 (Annotated Benchmark Clip)</span>
+                  <span class="sample-card-tag">Ground Truth</span>
+                </div>
+                <p class="sample-card-desc">Full room 21 students annotated across 300 frames. 100% census tracking verified.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upload Custom Video Panel -->
+          <div id="panel-upload" style="display: none;">
+            <div class="dropzone" id="video-dropzone" onclick="document.getElementById('video-file-input').click()">
+              <div class="dropzone-icon">📁</div>
+              <p class="dropzone-text">Click or drag & drop classroom video here</p>
+              <p style="font-size: 11px; color: var(--text-dim); margin-top: 4px;">Supports MP4, AVI, MOV, WEBM</p>
+              <div class="dropzone-file-name" id="selected-file-name" style="display: none;"></div>
+              <input type="file" id="video-file-input" accept="video/*" style="display: none;" onchange="handleFileSelect(event)">
+            </div>
+          </div>
+
+          <!-- Processing Settings -->
+          <div style="margin-bottom: 20px;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span>Max Duration to Process:</span>
+              <span id="duration-val" style="color: var(--accent-cyan);">10 seconds</span>
+            </label>
+            <input type="range" id="duration-slider" min="3" max="15" value="10" step="1" style="width: 100%; accent-color: var(--primary);" oninput="document.getElementById('duration-val').innerText = this.value + ' seconds'">
+          </div>
+
+          <!-- Action Button -->
+          <button class="btn-primary" id="btn-analyze" onclick="startAnalysis()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Run Attention Analysis Pipeline</span>
+          </button>
+
+          <!-- Processing Progress Bar -->
+          <div class="progress-card" id="progress-card">
+            <div class="progress-header">
+              <span id="progress-status" style="color: var(--text-main);">Initializing Pipeline...</span>
+              <span id="progress-percent" style="color: var(--accent-cyan);">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <div class="stage-indicators">
+              <span>YOLO11 Detection</span>
+              <span>DeepSORT Tracking</span>
+              <span>Attention Scoring</span>
+              <span>Diagnostic Render</span>
+            </div>
+          </div>
+
+          <!-- Scientific Grounding Notice -->
+          <div style="margin-top: 24px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 11px; color: var(--text-dim); line-height: 1.4;">
+            <strong style="color: var(--text-muted);">Scientific Integrity Principle:</strong> Predictions reflect observable physical behaviors (head orientation, gaze proxy, torso posture, and motor dynamics). The pipeline explicitly assigns <code style="color: var(--uncertain);">Uncertain</code> when visual evidence is inadequate.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Video Playback & Live Telemetry -->
+      <main class="results-column">
+        
+        <!-- Video Player Card -->
+        <div class="glass-card video-display-card">
+          <div class="video-tabs-bar">
+            <div class="video-view-toggles">
+              <button class="vtab-btn active" id="vtab-output" onclick="switchVideoView('output')">Annotated Output Video (With AI BBoxes & Telemetry)</button>
+              <button class="vtab-btn" id="vtab-input" onclick="switchVideoView('input')">Original Video</button>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a id="btn-download-video" class="vtab-btn" href="#" download style="display: none; text-decoration: none; color: #FFFFFF; background: rgba(16, 185, 129, 0.2); border-color: var(--attentive);">
+                ⬇ Download Output Video
+              </a>
+              <a id="btn-download-json" class="vtab-btn" href="#" download style="display: none; text-decoration: none; color: #FFFFFF; background: rgba(99, 102, 241, 0.2); border-color: var(--primary);">
+                Export Telemetry (JSON)
+              </a>
+            </div>
+          </div>
+
+          <!-- Video Player Container -->
+          <div class="video-wrapper" id="video-wrapper">
+            <div class="empty-state" id="video-empty-state">
+              <div style="font-size: 40px; opacity: 0.6;">📹</div>
+              <p style="font-weight: 500;">No video analyzed yet</p>
+              <p style="font-size: 12px; opacity: 0.7;">Select a pilot clip or upload a video and click "Run Attention Analysis Pipeline"</p>
+            </div>
+            <video id="main-video-player" controls playsinline style="display: none;">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <!-- Quick Metrics Bar -->
+          <div class="metrics-grid" id="metrics-grid" style="display: none;">
+            <div class="metric-card">
+              <span class="metric-label">Class Average Attention</span>
+              <span class="metric-value" id="metric-class-avg" style="color: var(--attentive);">--</span>
+              <span class="metric-sub" id="metric-class-status">Observable attention index</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Student Census (Total Count)</span>
+              <span class="metric-value" id="metric-census-count" style="color: var(--accent-cyan);">--</span>
+              <span class="metric-sub">Counted seated students in room</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Active / Tracked Students</span>
+              <span class="metric-value" id="metric-total-students">--</span>
+              <span class="metric-sub">Live & frame-reference tracking</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Exited Camera View</span>
+              <span class="metric-value" id="metric-exited-count" style="color: var(--uncertain);">--</span>
+              <span class="metric-sub">Left boundary without error</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Box Dynamics Status</span>
+              <span class="metric-value" id="metric-box-dynamics" style="font-size: 18px; color: #FFFFFF;">--</span>
+              <span class="metric-sub">Increase / vanish detection</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Attentive Ratio</span>
+              <span class="metric-value" id="metric-attentive-pct" style="color: var(--attentive);">--</span>
+              <span class="metric-sub">Focusing on instructional area</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Inattentive Ratio</span>
+              <span class="metric-value" id="metric-inattentive-pct" style="color: var(--inattentive);">--</span>
+              <span class="metric-sub">Head down / disengaged</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Attention Drop Alerts</span>
+              <span class="metric-value" id="metric-drops-count" style="color: var(--inattentive);">--</span>
+              <span class="metric-sub">Sustained drops detected</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Individual Student Attention Grid -->
+        <div class="glass-card" id="students-section" style="margin-top: 24px; display: none;">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Individual Student Attention Trajectories
+          </div>
+          <div class="students-grid" id="students-grid">
+            <!-- Student cards dynamically rendered here -->
+          </div>
+        </div>
+
+        <!-- Attention Drops & Pedagogical Interventions Section -->
+        <div class="glass-card" id="drops-section" style="margin-top: 24px; display: none;">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            Pedagogical Intervention Recommendations & Attention Drop Events
+          </div>
+          <div class="drop-feed" id="drop-feed">
+            <!-- Drop items dynamically rendered here -->
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

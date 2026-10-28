@@ -1,0 +1,114 @@
+{
+  "stage_1_source_extraction": {
+    "status": "PASS",
+    "input_video": "view1.mp4",
+    "extracted_frames_count": 60,
+    "resolution": "1092x614",
+    "native_fps": 30.0
+  },
+  "stage_2_detection_tracking": {
+    "status": "PASS",
+    "detector": "classroom_attention_research/checkpoints/yolo11n-pose.pt",
+    "tracker": "DeepSORT",
+    "total_unique_students_tracked": 6,
+    "sample_output": {
+      "student_id": 1,
+      "bounding_box": [
+        377.0,
+        129.2,
+        504.7,
+        287.4
+      ],
+      "confidence": 0.881,
+      "keypoints_shape": [
+        17,
+        2
+      ]
+    }
+  },
+  "stage_3_facial_modalities": {
+    "status": "PASS",
+    "components": [
+      "Face Cropping",
+      "OpenSeeFace Tracker"
+    ],
+    "sample_output": {
+      "track_id": 1,
+      "facial_landmarks_shape": [
+        66,
+        3
+      ],
+      "facial_landmarks_first_pt": [
+        17.17,
+        21.04,
+        0.0
+      ],
+      "head_pose": {
+        "pitch_deg": 9.09,
+        "yaw_deg": -45.91,
+        "roll_deg": -177.73
+      },
+      "eye_gaze": {
+        "vector": [
+          -0.718,
+          0.158,
+          0.687
+        ],
+        "on_instruction": false
+      },
+      "facial_emotion": {
+        "primary_emotion": "distracted",
+        "confidence": 0.625,
+        "scores": {
+          "focused": 0.083,
+          "neutral": 0.167,
+          "fatigued": 0.083,
+          "distracted": 0.625,
+          "confused": 0.042
+        }
+      },
+      "facial_motion": {
+        "velocity": 0.0
+      }
+    }
+  },
+  "stage_4_attention_modeling": {
+    "status": "PASS",
+    "scorer_model": "Gradient Boosting (GBDT)",
+    "sample_output": {
+      "student_id": 1,
+      "timestamp_sec": 0.2,
+      "attention_score_0_100": 100.0,
+      "category": "Attentive",
+      "confidence": 1.0
+    }
+  },
+  "stage_5_attention_trigger": {
+    "status": "PASS",
+    "sample_output": {
+      "attention_drop_detected": true,
+      "timestamp_sec": 7.56,
+      "event_id": "DROP-T03-001",
+      "student_track_id": 3,
+      "drop_magnitude": 28.0,
+      "evidence": "Sustained attention score decline from baseline 79.5 to 51.5 (-28.0 pts) over 2.0s. Observable markers: head pitched downward (-21.4 deg), slumped body posture (65.4 deg), low motor activity (energy: 1.3)."
+    }
+  },
+  "stage_6_analysis_intervention": {
+    "status": "PASS",
+    "components": [
+      "LLM Recommendation Engine",
+      "System Assessment Report",
+      "Teacher Dashboard"
+    ],
+    "sample_output": {
+      "explanation": "Student ID #3 experienced a sustained score decline from 79.5 to 28.0 (-28.0 pts) over 2.0s, driven by persistent downward head orientation and upper-body slouching.",
+      "teaching_recommendation": "Evaluate lesson pacing and cognitive load. The physical slump may indicate cognitive fatigue or lecture fatigue.",
+      "intervention_suggestion": "Transition from monologue to a 2-minute 'Think-Pair-Share' active learning exercise, or introduce a 60-second physical stretch break to re-energize the room.",
+      "urgency_level": "HIGH"
+    },
+    "report_generated_json": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\system_assessment_report.json",
+    "report_generated_md": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\system_assessment_report.md",
+    "dashboard_script": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\src\\dashboard\\app.py"
+  }
+}

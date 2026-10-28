@@ -1,0 +1,75 @@
+{
+  "timestamp": 1793116626.218737,
+  "pilot_data_summary": {
+    "total_clips_checked": 24,
+    "valid_dynamic_clips": 21,
+    "excluded_frozen_clips": [
+      "data/pilot/low_engagement/low/view7.mp4",
+      "data/pilot/low_engagement/low/view8.mp4"
+    ],
+    "excluded_duplicate_clips": [
+      {
+        "duplicate_file": "data/pilot/low_engagement/low/view2.mp4",
+        "identical_to": "data/pilot/low_engagement/low/view1.mp4",
+        "md5": "07cac49efbcdbd45e2d2bb905ff22eeb"
+      }
+    ],
+    "class_distribution_clips": {
+      "high_engagement": 12,
+      "low_engagement": 9
+    }
+  },
+  "target_semantics_audit": {
+    "group_engagement_target": "Ordinal clip label from OUC-CGE (Preserved at clip level)",
+    "individual_attention_target": "Decoupled Observable Behavior Index (0-100)",
+    "individual_supervised_model_trained": false,
+    "reason_for_no_individual_model": "OUC-CGE contains zero individual student attention ground-truth annotations. Assigning group labels to individuals constitutes an ecological fallacy."
+  },
+  "generalization_verification_status": {
+    "cross_view_generalization": "VERIFIED (High accuracy across synchronized cameras of the same session)",
+    "cross_session_generalization": "NOT VERIFIED",
+    "justification": "Pilot subset contains only 2 distinct recording sessions. Out-of-session evaluation requires multi-session dataset."
+  },
+  "pipeline_technical_diagnostics": {
+    "pipeline_fps": 22.9,
+    "gpu_vram_mb": 76.3,
+    "total_frames_evaluated": 100,
+    "total_student_detections": 539,
+    "missing_modality_rates": {
+      "missing_face_ratio": 0.699,
+      "missing_head_pose_ratio": 0.72,
+      "missing_gaze_ratio": 0.72,
+      "missing_torso_ratio": 0.083,
+      "is_distant_ratio": 0.375
+    },
+    "mean_observable_attention_score": 73.8,
+    "attention_drop_events_detected": 2,
+    "diagnostic_video": "C:\\Users\\User\\Downloads\\Model v2\\classroom_attention_research\\reports\\honest_pilot_pipeline_demo.mp4"
+  },
+  "baseline_comparison_metrics": {
+    "sample_unit": "Video Clip (N = 21)",
+    "majority_class_baseline": {
+      "accuracy": 0.5714,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.3636
+    },
+    "group_engagement_logistic_regression": {
+      "evaluation_strategy": "Stratified 5-Fold Cross Validation",
+      "accuracy": 0.9524,
+      "balanced_accuracy": 0.9583,
+      "macro_f1": 0.9519,
+      "recall_class_0_low": 1.0,
+      "recall_class_1_high": 0.9167,
+      "confusion_matrix": [
+        [
+          9,
+          0
+        ],
+        [
+          1,
+          11
+        ]
+      ]
+    }
+  }
+}
